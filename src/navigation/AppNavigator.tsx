@@ -70,25 +70,29 @@ export function AppNavigator() {
     <Tab.Navigator
       screenOptions={{
         headerShown: false,
+        tabBarShowLabel: true,
         tabBarStyle: {
           backgroundColor: theme.colors.headerBg,
           borderTopColor: theme.colors.headerBorder,
           borderTopWidth: 1,
-          height: 72,
-          paddingBottom: 12,
+          height: 80,
+          paddingBottom: 14,
           paddingTop: 8,
         },
         tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: '#A0AABB',
+        tabBarInactiveTintColor: '#94A3B8',
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '700',
-          letterSpacing: 0.3,
-          marginTop: 2,
+          letterSpacing: 0.2,
+          marginTop: 4,
+          color: undefined, // inherit from tint color
         },
         tabBarActiveBackgroundColor: 'transparent',
         tabBarItemStyle: {
-          borderRadius: 10,
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
           paddingVertical: 4,
         },
       }}
