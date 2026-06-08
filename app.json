@@ -16,6 +16,19 @@
       "output": "single",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": []
+    "plugins": [],
+    "extra": {
+      "eas": {
+        "projectId": "f9ba92b6-f43d-4fac-a71a-210b4e01f9f2"
+      }
+    },
+    "owner": "aryanbatra16",
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/f9ba92b6-f43d-4fac-a71a-210b4e01f9f2"
+    },
+    "android": {}
   }
 }
