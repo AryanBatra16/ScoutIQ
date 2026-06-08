@@ -1,17 +1,18 @@
 export const theme = {
   colors: {
-    primary: '#6C63FF',
-    primaryLight: '#EEF0FF',
-    background: '#F7F8FC',
-    surface: '#FFFFFF',
-    border: '#E5E7EB',
-    text: '#1A1A2E',
-    textSecondary: '#6B7280',
-    textInverse: '#FFFFFF',
-    success: '#10B981',
-    warning: '#F59E0B',
-    danger: '#EF4444',
-    scoreTrack: '#E5E7EB',
+    primary: '#7C3AED',         // Purple Accent
+    primaryLight: '#EEEDFE',    // Very light purple tint
+    background: '#FAF6EE',      // Warm Cream screen background
+    surface: '#FFFFFF',         // Card surfaces
+    border: '#E6E2D8',          // Light warm border
+    text: '#1E293B',            // Dark Slate primary text
+    textSecondary: '#64748B',   // Slate secondary text
+    textInverse: '#FFFFFF',     // White text
+    success: '#0D9488',         // Teal/Green success
+    warning: '#F59E0B',         // Amber warning
+    danger: '#EF4444',          // Red danger
+    scoreTrack: '#E6E2D8',      // Progress track color
+    brandDark: '#1A252C',       // Dark Slate theme base
   },
   spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
   fontSizes: { xs: 11, sm: 13, md: 15, lg: 18, xl: 22, xxl: 28 },
@@ -24,28 +25,28 @@ export const theme = {
   borderRadius: { sm: 8, md: 12, lg: 16, xl: 24, full: 9999 },
   shadow: {
     card: {
-      shadowColor: '#000',
-      shadowOffset: { width: 0, height: 2 },
-      shadowOpacity: 0.08,
+      shadowColor: '#1A252C',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.06,
       shadowRadius: 8,
-      elevation: 3,
+      elevation: 2,
     },
   },
 };
 
 export const AVATAR_COLORS = [
-  '#6C63FF',
-  '#F59E0B',
-  '#10B981',
-  '#EF4444',
-  '#3B82F6',
-  '#8B5CF6',
+  '#7C3AED', // Purple
+  '#0D9488', // Teal
+  '#F97316', // Orange
+  '#3B82F6', // Blue
+  '#EC4899', // Pink
+  '#64748B', // Slate
 ];
 
 export const SPORT_COLORS: Record<string, string> = {
-  Football: '#10B981',
-  Basketball: '#F97316',
-  Athletics: '#3B82F6',
+  Football: '#7C3AED',   // Purple
+  Basketball: '#0D9488', // Teal
+  Athletics: '#F97316',  // Orange
 };
 
 export const SPORT_EMOJIS: Record<string, string> = {

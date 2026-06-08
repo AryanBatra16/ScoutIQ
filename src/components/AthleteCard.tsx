@@ -17,23 +17,26 @@ export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
 
   return (
     <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.75}>
+      {/* Sport accent bar */}
       <View style={[styles.sportBar, { backgroundColor: sportColor }]} />
+
       <View style={styles.topRow}>
-        <Avatar name={athlete.name} size={44} color={avatarColor} />
+        <Avatar name={athlete.name} size={46} color={avatarColor} />
         <View style={styles.info}>
           <Text style={styles.name}>{athlete.name}</Text>
           <Text style={styles.meta}>
             {SPORT_EMOJIS[athlete.sport]} {athlete.sport} · {athlete.position} · Age {athlete.age}
           </Text>
         </View>
-        <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '1A' }]}>
+        <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '16', borderColor: scoreColor + '40' }]}>
           <Text style={[styles.scoreText, { color: scoreColor }]}>{athlete.score}</Text>
         </View>
       </View>
+
       <View style={styles.bottomRow}>
         <Text style={styles.scoreLabel}>Score</Text>
         <View style={styles.progressBarWrap}>
-          <ProgressBar value={athlete.score} height={6} color={scoreColor} />
+          <ProgressBar value={athlete.score} height={7} color={scoreColor} />
         </View>
         <Text style={[styles.scoreValueSmall, { color: scoreColor }]}>
           {athlete.score}/100
@@ -46,10 +49,11 @@ export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.colors.surface,
-    borderRadius: 12,
+    borderRadius: 14,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    padding: 12,
+    padding: 13,
+    paddingLeft: 16,
     marginBottom: 10,
     ...theme.shadow.card,
     overflow: 'hidden',
@@ -60,8 +64,8 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 4,
-    borderTopLeftRadius: 12,
-    borderBottomLeftRadius: 12,
+    borderTopLeftRadius: 14,
+    borderBottomLeftRadius: 14,
   },
   topRow: {
     flexDirection: 'row',
@@ -75,42 +79,44 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '700',
     color: theme.colors.text,
+    letterSpacing: 0.1,
   },
   meta: {
     fontSize: 12,
     color: theme.colors.textSecondary,
-    marginTop: 2,
+    marginTop: 3,
   },
   scoreBadge: {
-    width: 36,
-    height: 36,
-    borderRadius: 8,
+    width: 40,
+    height: 40,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
+    borderWidth: 1.5,
   },
   scoreText: {
     fontSize: 15,
-    fontWeight: '700',
+    fontWeight: '800',
   },
   bottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 10,
+    marginTop: 11,
     paddingLeft: 4,
   },
   scoreLabel: {
     fontSize: 11,
-    fontWeight: '500',
+    fontWeight: '600',
     color: theme.colors.textSecondary,
-    width: 40,
+    width: 42,
   },
   progressBarWrap: {
     flex: 1,
-    marginHorizontal: 8,
+    marginHorizontal: 10,
   },
   scoreValueSmall: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
     width: 48,
     textAlign: 'right',
   },

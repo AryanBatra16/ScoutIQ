@@ -54,6 +54,7 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
   if (!athlete) {
     return (
       <View style={styles.errorContainer}>
+        <Text style={styles.errorEmoji}>🤷</Text>
         <Text style={styles.errorText}>Athlete not found</Text>
       </View>
     );
@@ -67,14 +68,19 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
   const readinessLabel =
     athlete.score >= 80 ? 'High Readiness' : athlete.score >= 60 ? 'Mid Readiness' : 'Low Readiness';
 
+  const readinessBg = athlete.score >= 80
+    ? 'rgba(13, 148, 136, 0.1)'
+    : athlete.score >= 60
+    ? 'rgba(245, 158, 11, 0.1)'
+    : 'rgba(239, 68, 68, 0.1)';
+
   const triggerToast = (type: 'add' | 'remove') => {
     if (toastTimeoutRef.current) {
       clearTimeout(toastTimeoutRef.current);
     }
     setToastType(type);
-    setToastMessage(type === 'add' ? 'Added to shortlist' : 'Removed from shortlist');
+    setToastMessage(type === 'add' ? 'Added to shortlist ✓' : 'Removed from shortlist');
 
-    // Slide up
     Animated.spring(toastTranslateY, {
       toValue: 0,
       tension: 60,
@@ -82,7 +88,6 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
       useNativeDriver: true,
     }).start();
 
-    // Auto-dismiss
     toastTimeoutRef.current = setTimeout(() => {
       Animated.timing(toastTranslateY, {
         toValue: 120,
@@ -145,43 +150,66 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
   return (
     <View style={{ flex: 1 }}>
       <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+        {/* Hero Section */}
         <View style={styles.hero}>
-          <Avatar name={athlete.name} size={80} color={avatarColor} />
-          <Text style={styles.heroName}>{athlete.name}</Text>
-          <View style={[styles.sportBadge, { backgroundColor: sportColor + '26' }]}>
-            <Text style={[styles.sportBadgeText, { color: sportColor }]}>
-              {SPORT_EMOJIS[athlete.sport]} {athlete.sport} · {athlete.position}
-            </Text>
+          <View style={[styles.heroAccent, { backgroundColor: sportColor + '30' }]} />
+          <View style={styles.heroContent}>
+            <View style={styles.avatarRing}>
+              <Avatar name={athlete.name} size={84} color={avatarColor} />
+            </View>
+            <Text style={styles.heroName}>{athlete.name}</Text>
+            <View style={[styles.sportBadge, { backgroundColor: sportColor + '22', borderColor: sportColor + '50' }]}>
+              <Text style={[styles.sportBadgeText, { color: sportColor }]}>
+                {SPORT_EMOJIS[athlete.sport]} {athlete.sport}  ·  {athlete.position}
+              </Text>
+            </View>
+            <View style={styles.heroMeta}>
+              <View style={styles.heroMetaItem}>
+                <Text style={styles.heroMetaValue}>{athlete.age}</Text>
+                <Text style={styles.heroMetaLabel}>Age</Text>
+              </View>
+              <View style={styles.heroMetaDivider} />
+              <View style={styles.heroMetaItem}>
+                <Text style={[styles.heroMetaValue, { color: scoreColor }]}>{athlete.score}</Text>
+                <Text style={styles.heroMetaLabel}>Score</Text>
+              </View>
+            </View>
           </View>
-          <Text style={styles.heroAge}>Age {athlete.age}</Text>
-          <Text style={styles.heroEmoji}>{SPORT_EMOJIS[athlete.sport]}</Text>
         </View>
 
+        {/* Readiness Card */}
         <View style={styles.card}>
           <Text style={styles.sectionLabel}>OVERALL READINESS</Text>
           <View style={styles.scoreRow}>
             <Text style={[styles.scoreBig, { color: scoreColor }]}>{athlete.score}</Text>
-            <Text style={styles.scoreOutOf}>/ 100</Text>
+            <Text style={styles.scoreOutOf}> / 100</Text>
           </View>
           <ProgressBar value={athlete.score} height={12} color={scoreColor} />
-          <Text style={[styles.readinessLabel, { color: scoreColor }]}>{readinessLabel}</Text>
+          <View style={[styles.readinessBadge, { backgroundColor: readinessBg }]}>
+            <Text style={[styles.readinessLabel, { color: scoreColor }]}>● {readinessLabel}</Text>
+          </View>
         </View>
 
+        {/* Stats Card */}
         <View style={[styles.card, { marginTop: 0 }]}>
-          <Text style={styles.sectionTitle}>{athlete.sport} Stats</Text>
+          <Text style={styles.sectionTitle}>{SPORT_EMOJIS[athlete.sport]}  {athlete.sport} Performance Stats</Text>
           {renderStats()}
         </View>
 
+        {/* Biography Card */}
         <View style={[styles.card, { marginTop: 0 }]}>
-          <Text style={styles.sectionTitle}>Biography</Text>
+          <Text style={styles.sectionTitle}>📝  Biography</Text>
           <Text style={styles.bioText}>{athlete.bio}</Text>
         </View>
 
+        {/* CTA Button */}
         <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
           <TouchableOpacity
             style={[
               styles.shortlistButton,
-              { backgroundColor: shortlisted ? theme.colors.danger : theme.colors.primary },
+              {
+                backgroundColor: shortlisted ? theme.colors.danger : theme.colors.primary,
+              },
             ]}
             onPress={() => {
               shortlistProps.toggleShortlist(athlete);
@@ -192,7 +220,7 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
             activeOpacity={0.9}
           >
             <Text style={styles.shortlistButtonText}>
-              {shortlisted ? '✓ Remove from Shortlist' : '+ Add to Shortlist'}
+              {shortlisted ? '✕  Remove from Shortlist' : '+  Add to Shortlist'}
             </Text>
           </TouchableOpacity>
         </Animated.View>
@@ -204,7 +232,7 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
           styles.toast,
           {
             transform: [{ translateY: toastTranslateY }],
-            backgroundColor: toastType === 'add' ? '#1A1A2E' : '#3B3B4F',
+            backgroundColor: toastType === 'add' ? theme.colors.brandDark : '#3B3B4F',
           },
         ]}
       >
@@ -235,6 +263,10 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: theme.colors.background,
+    gap: 12,
+  },
+  errorEmoji: {
+    fontSize: 40,
   },
   errorText: {
     fontSize: theme.fontSizes.lg,
@@ -243,34 +275,78 @@ const styles = StyleSheet.create({
   },
   hero: {
     backgroundColor: theme.colors.surface,
-    alignItems: 'center',
     paddingBottom: 24,
-    paddingTop: 16,
+    overflow: 'hidden',
+    position: 'relative',
+  },
+  heroAccent: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    height: 80,
+  },
+  heroContent: {
+    alignItems: 'center',
+    paddingTop: 24,
+  },
+  avatarRing: {
+    padding: 4,
+    borderRadius: 50,
+    backgroundColor: 'rgba(255,255,255,0.8)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 4,
   },
   heroName: {
-    fontSize: 24,
-    fontWeight: '700',
+    fontSize: 26,
+    fontWeight: '800',
     color: theme.colors.text,
-    marginTop: 12,
+    marginTop: 14,
+    letterSpacing: 0.3,
   },
   sportBadge: {
     borderRadius: 999,
-    paddingVertical: 4,
-    paddingHorizontal: 14,
-    marginTop: 6,
+    paddingVertical: 5,
+    paddingHorizontal: 16,
+    marginTop: 8,
+    borderWidth: 1,
   },
   sportBadgeText: {
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
-  heroAge: {
-    fontSize: 14,
+  heroMeta: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 18,
+    paddingHorizontal: 32,
+  },
+  heroMetaItem: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  heroMetaValue: {
+    fontSize: 22,
+    fontWeight: '800',
+    color: theme.colors.text,
+  },
+  heroMetaLabel: {
+    fontSize: 11,
     color: theme.colors.textSecondary,
-    marginTop: 4,
+    fontWeight: '500',
+    marginTop: 2,
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
   },
-  heroEmoji: {
-    fontSize: 32,
-    marginTop: 4,
+  heroMetaDivider: {
+    width: 1,
+    height: 36,
+    backgroundColor: theme.colors.border,
+    marginHorizontal: 16,
   },
   card: {
     backgroundColor: theme.colors.surface,
@@ -278,12 +354,14 @@ const styles = StyleSheet.create({
     padding: theme.spacing.md,
     borderRadius: 16,
     ...theme.shadow.card,
+    borderWidth: 1,
+    borderColor: theme.colors.border,
   },
   sectionLabel: {
     fontSize: 11,
-    fontWeight: '600',
+    fontWeight: '700',
     color: theme.colors.textSecondary,
-    letterSpacing: 0.8,
+    letterSpacing: 1.2,
     textTransform: 'uppercase',
   },
   scoreRow: {
@@ -291,79 +369,90 @@ const styles = StyleSheet.create({
     alignItems: 'flex-end',
     justifyContent: 'center',
     marginTop: 8,
+    marginBottom: 12,
   },
   scoreBig: {
-    fontSize: 48,
+    fontSize: 56,
     fontWeight: '800',
+    lineHeight: 60,
   },
   scoreOutOf: {
-    fontSize: 20,
+    fontSize: 22,
     color: theme.colors.textSecondary,
     marginBottom: 8,
-    marginLeft: 2,
+  },
+  readinessBadge: {
+    alignSelf: 'center',
+    paddingVertical: 6,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    marginTop: 12,
   },
   readinessLabel: {
     fontSize: 13,
-    fontWeight: '600',
-    marginTop: 8,
-    textAlign: 'center',
+    fontWeight: '700',
   },
   sectionTitle: {
     fontSize: theme.fontSizes.md,
     fontWeight: '700',
     color: theme.colors.text,
-    marginBottom: theme.spacing.sm,
+    marginBottom: theme.spacing.md,
   },
   bioText: {
     fontSize: 14,
     color: theme.colors.textSecondary,
-    lineHeight: 22,
+    lineHeight: 24,
   },
   shortlistButton: {
     marginHorizontal: theme.spacing.md,
     marginBottom: 32,
-    paddingVertical: 16,
+    paddingVertical: 17,
     borderRadius: 14,
     alignItems: 'center',
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.25,
+    shadowRadius: 12,
+    elevation: 6,
   },
   shortlistButtonText: {
     fontSize: 16,
     fontWeight: '700',
     color: theme.colors.textInverse,
+    letterSpacing: 0.3,
   },
   toast: {
     position: 'absolute',
     bottom: 24,
     left: theme.spacing.md,
     right: theme.spacing.md,
-    borderRadius: 10,
-    paddingVertical: 10,
+    borderRadius: 12,
+    paddingVertical: 12,
     paddingHorizontal: 16,
     flexDirection: 'row',
     alignItems: 'center',
-    elevation: 5,
+    elevation: 8,
     shadowColor: '#000',
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.2,
-    shadowRadius: 6,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
   },
   toastText: {
-    fontSize: 13,
-    fontWeight: '500',
+    fontSize: 14,
+    fontWeight: '600',
     color: '#FFFFFF',
     marginLeft: 10,
     flex: 1,
   },
   toastCheckCircle: {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
+    width: 24,
+    height: 24,
+    borderRadius: 12,
     justifyContent: 'center',
     alignItems: 'center',
   },
   toastCheckIcon: {
     color: '#FFFFFF',
-    fontSize: 11,
+    fontSize: 12,
     fontWeight: 'bold',
   },
 });

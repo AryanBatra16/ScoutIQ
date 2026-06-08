@@ -21,9 +21,9 @@ const ShortlistStack = createNativeStackNavigator<ShortlistStackParamList>();
 
 const headerOptions = {
   headerStyle: {
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.brandDark,
   },
-  headerTintColor: theme.colors.text,
+  headerTintColor: theme.colors.textInverse,
   headerTitleStyle: {
     fontWeight: '700' as const,
     fontSize: 18,
@@ -69,17 +69,23 @@ export function AppNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: theme.colors.surface,
-          borderTopColor: theme.colors.border,
-          height: 60,
+          backgroundColor: theme.colors.brandDark,
+          borderTopColor: 'rgba(255, 255, 255, 0.08)',
+          borderTopWidth: 1,
+          height: 62,
           paddingBottom: 8,
-          paddingTop: 4,
+          paddingTop: 6,
         },
-        tabBarActiveTintColor: theme.colors.primary,
-        tabBarInactiveTintColor: theme.colors.textSecondary,
+        tabBarActiveTintColor: '#FFFFFF',
+        tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
         tabBarLabelStyle: {
-          fontSize: 12,
-          fontWeight: '600',
+          fontSize: 11,
+          fontWeight: '700',
+          letterSpacing: 0.3,
+        },
+        tabBarActiveBackgroundColor: 'transparent',
+        tabBarItemStyle: {
+          borderRadius: 10,
         },
       }}
     >
@@ -87,7 +93,7 @@ export function AppNavigator() {
         name="Home"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home" size={size} color={color} />
+            <Ionicons name="home" size={size - 1} color={color} />
           ),
         }}
       >
@@ -97,7 +103,7 @@ export function AppNavigator() {
         name="Discover"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="compass" size={size} color={color} />
+            <Ionicons name="compass" size={size - 1} color={color} />
           ),
         }}
       >
@@ -107,12 +113,17 @@ export function AppNavigator() {
         name="Shortlist"
         options={{
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="bookmark" size={size} color={color} />
+            <Ionicons name="bookmark" size={size - 1} color={color} />
           ),
           tabBarBadge:
             shortlistProps.shortlist.length > 0
               ? shortlistProps.shortlist.length
               : undefined,
+          tabBarBadgeStyle: {
+            backgroundColor: theme.colors.primary,
+            fontSize: 10,
+            fontWeight: '700',
+          },
         }}
       >
         {() => <ShortlistStackNavigator shortlistProps={shortlistProps} />}

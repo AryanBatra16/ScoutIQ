@@ -9,13 +9,16 @@ interface StatRowProps {
 }
 
 export function StatRow({ label, value }: StatRowProps) {
+  const color = getScoreColor(value);
   return (
     <View style={styles.row}>
       <Text style={styles.label}>{label}</Text>
       <View style={styles.barContainer}>
-        <ProgressBar value={value} height={8} color={getScoreColor(value)} />
+        <ProgressBar value={value} height={8} color={color} />
       </View>
-      <Text style={[styles.value, { color: getScoreColor(value) }]}>{value}</Text>
+      <View style={[styles.valueBadge, { backgroundColor: color + '18' }]}>
+        <Text style={[styles.value, { color }]}>{value}</Text>
+      </View>
     </View>
   );
 }
@@ -24,20 +27,28 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: theme.spacing.sm,
+    marginBottom: 12,
   },
   label: {
-    width: 90,
+    width: 100,
     fontSize: 13,
     color: theme.colors.textSecondary,
+    fontWeight: '500',
   },
   barContainer: {
     flex: 1,
+    marginRight: 10,
+  },
+  valueBadge: {
+    width: 34,
+    height: 22,
+    borderRadius: 6,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   value: {
-    width: 28,
-    textAlign: 'right',
-    fontSize: 13,
-    fontWeight: '600',
+    textAlign: 'center',
+    fontSize: 12,
+    fontWeight: '700',
   },
 });

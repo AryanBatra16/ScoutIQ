@@ -24,7 +24,7 @@ interface Props extends NativeStackScreenProps<DiscoverStackParamList, 'Feed'> {
 }
 
 const FILTERS: { label: string; value: Sport | 'All' }[] = [
-  { label: 'All', value: 'All' },
+  { label: 'All Sports', value: 'All' },
   { label: `${SPORT_EMOJIS.Football} Football`, value: 'Football' },
   { label: `${SPORT_EMOJIS.Basketball} Basketball`, value: 'Basketball' },
   { label: `${SPORT_EMOJIS.Athletics} Athletics`, value: 'Athletics' },
@@ -51,40 +51,48 @@ export function DiscoverScreen({ navigation, shortlistProps }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.searchContainer}>
-        <Text style={styles.searchIcon}>🔍</Text>
-        <TextInput
-          style={styles.searchInput}
-          placeholder="Search athletes..."
-          placeholderTextColor={theme.colors.textSecondary}
-          value={searchText}
-          onChangeText={setSearchText}
-          clearButtonMode="while-editing"
-          autoCorrect={false}
-          autoCapitalize="none"
-        />
-      </View>
-
-      <Text style={styles.resultCount}>
-        Showing {resultCount} result{resultCount === 1 ? '' : 's'}
-      </Text>
-
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        style={styles.chipsScroll}
-        contentContainerStyle={styles.chipsContainer}
-        keyboardShouldPersistTaps="handled"
-      >
-        {FILTERS.map((f) => (
-          <FilterChip
-            key={f.value}
-            label={f.label}
-            active={activeFilter === f.value}
-            onPress={() => setActiveFilter(f.value)}
+      {/* Search & Filter Header */}
+      <View style={styles.searchHeader}>
+        <View style={styles.searchContainer}>
+          <Text style={styles.searchIcon}>🔍</Text>
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search athletes by name..."
+            placeholderTextColor={theme.colors.textSecondary}
+            value={searchText}
+            onChangeText={setSearchText}
+            clearButtonMode="while-editing"
+            autoCorrect={false}
+            autoCapitalize="none"
           />
-        ))}
-      </ScrollView>
+        </View>
+
+        <ScrollView
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          style={styles.chipsScroll}
+          contentContainerStyle={styles.chipsContainer}
+          keyboardShouldPersistTaps="handled"
+        >
+          {FILTERS.map((f) => (
+            <FilterChip
+              key={f.value}
+              label={f.label}
+              active={activeFilter === f.value}
+              onPress={() => setActiveFilter(f.value)}
+            />
+          ))}
+        </ScrollView>
+
+        <View style={styles.resultRow}>
+          <Text style={styles.resultCount}>
+            {resultCount} {resultCount === 1 ? 'athlete' : 'athletes'} found
+          </Text>
+          {activeFilter !== 'All' && (
+            <Text style={styles.filterBadge}>{activeFilter}</Text>
+          )}
+        </View>
+      </View>
 
       <FlatList
         data={filteredAthletes}
@@ -116,47 +124,73 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: theme.colors.background,
   },
+  searchHeader: {
+    backgroundColor: theme.colors.surface,
+    paddingTop: 12,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   searchContainer: {
     marginHorizontal: theme.spacing.md,
-    marginTop: 12,
-    marginBottom: 8,
-    position: 'relative',
-    justifyContent: 'center',
-  },
-  searchIcon: {
-    position: 'absolute',
-    left: 12,
-    zIndex: 1,
-    fontSize: 16,
-  },
-  searchInput: {
-    backgroundColor: theme.colors.surface,
-    borderWidth: 1,
+    marginBottom: 10,
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: theme.colors.background,
+    borderWidth: 1.5,
     borderColor: theme.colors.border,
     borderRadius: 12,
+    paddingHorizontal: 12,
+  },
+  searchIcon: {
+    fontSize: 16,
+    marginRight: 8,
+  },
+  searchInput: {
+    flex: 1,
     paddingVertical: 12,
-    paddingLeft: 40,
-    paddingRight: 12,
     fontSize: theme.fontSizes.md,
     color: theme.colors.text,
+  },
+  resultRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: theme.spacing.md,
+    paddingTop: 6,
+    paddingBottom: 4,
   },
   resultCount: {
     fontSize: 12,
     color: theme.colors.textSecondary,
-    marginHorizontal: theme.spacing.md,
-    marginBottom: 8,
+    fontWeight: '500',
+  },
+  filterBadge: {
+    fontSize: 11,
+    color: theme.colors.primary,
+    fontWeight: '700',
+    backgroundColor: theme.colors.primaryLight,
+    paddingHorizontal: 10,
+    paddingVertical: 2,
+    borderRadius: 20,
   },
   chipsScroll: {
-    maxHeight: 40,
+    maxHeight: 42,
   },
   chipsContainer: {
     paddingHorizontal: theme.spacing.md,
     gap: 8,
+    alignItems: 'center',
   },
   listContent: {
     paddingHorizontal: theme.spacing.md,
     paddingBottom: 32,
-    paddingTop: 8,
+    paddingTop: 12,
   },
   separator: {
     height: 0,

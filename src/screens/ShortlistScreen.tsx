@@ -35,6 +35,10 @@ export function ShortlistScreen({ navigation, shortlistProps }: Props) {
       ? Math.round(shortlist.reduce((sum, a) => sum + a.score, 0) / shortlist.length)
       : 0;
 
+  const topScore = shortlist.length > 0
+    ? Math.max(...shortlist.map((a) => a.score))
+    : 0;
+
   const renderRightActions = (athlete: Athlete) => (
     <TouchableOpacity
       style={styles.deleteAction}
@@ -57,22 +61,33 @@ export function ShortlistScreen({ navigation, shortlistProps }: Props) {
 
   return (
     <View style={styles.screen}>
-      <View style={styles.statsBar}>
-        <View style={styles.statBox}>
-          <Text style={styles.statBoxValue}>{shortlist.length}</Text>
-          <Text style={styles.statBoxLabel}>Athletes</Text>
+      {/* Stats Header */}
+      <View style={styles.statsSection}>
+        <View style={styles.statsBar}>
+          <View style={[styles.statBox, styles.statBoxTeal]}>
+            <Text style={[styles.statBoxValue, { color: '#0D9488' }]}>{shortlist.length}</Text>
+            <Text style={styles.statBoxLabel}>📋  Athletes</Text>
+          </View>
+          <View style={[styles.statBox, styles.statBoxAmber]}>
+            <Text style={[styles.statBoxValue, { color: getScoreColor(avgScore) }]}>
+              {avgScore || '—'}
+            </Text>
+            <Text style={styles.statBoxLabel}>📈  Avg Score</Text>
+          </View>
+          <View style={[styles.statBox, styles.statBoxPurple]}>
+            <Text style={[styles.statBoxValue, { color: getScoreColor(topScore) }]}>
+              {topScore || '—'}
+            </Text>
+            <Text style={styles.statBoxLabel}>🏆  Top Score</Text>
+          </View>
         </View>
-        <View style={styles.statBox}>
-          <Text style={[styles.statBoxValue, { color: getScoreColor(avgScore) }]}>
-            {avgScore}
-          </Text>
-          <Text style={styles.statBoxLabel}>Avg Score</Text>
-        </View>
-      </View>
 
-      {shortlist.length > 0 && (
-        <Text style={styles.swipeHint}>← Swipe left to remove</Text>
-      )}
+        {shortlist.length > 0 && (
+          <View style={styles.swipeHintRow}>
+            <Text style={styles.swipeHint}>← Swipe left on a card to remove</Text>
+          </View>
+        )}
+      </View>
 
       <FlatList
         data={shortlist}
@@ -87,8 +102,8 @@ export function ShortlistScreen({ navigation, shortlistProps }: Props) {
           <EmptyState
             icon="🏆"
             title="No athletes shortlisted"
-            subtitle="Go discover some talent!"
-            actionLabel="Browse athletes"
+            subtitle="Head over to Discover and add your top candidates to the shortlist."
+            actionLabel="Browse athletes →"
             onAction={() => {
               navigation.getParent()?.navigate('Discover');
             }}
@@ -111,38 +126,76 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: theme.colors.background,
   },
+  statsSection: {
+    backgroundColor: theme.colors.surface,
+    paddingBottom: 8,
+    borderBottomWidth: 1,
+    borderColor: theme.colors.border,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.04,
+    shadowRadius: 4,
+    elevation: 2,
+  },
   statsBar: {
     flexDirection: 'row',
-    margin: theme.spacing.md,
-    gap: theme.spacing.md,
+    marginHorizontal: theme.spacing.md,
+    marginTop: 14,
+    gap: 10,
   },
   statBox: {
     flex: 1,
-    backgroundColor: theme.colors.primaryLight,
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 14,
+    borderWidth: 1.5,
+    paddingVertical: 14,
+    paddingHorizontal: 6,
     alignItems: 'center',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
+    elevation: 3,
+  },
+  statBoxTeal: {
+    backgroundColor: 'rgba(13, 148, 136, 0.06)',
+    borderColor: '#0D9488',
+    shadowColor: '#0D9488',
+  },
+  statBoxAmber: {
+    backgroundColor: 'rgba(245, 158, 11, 0.06)',
+    borderColor: '#F59E0B',
+    shadowColor: '#F59E0B',
+  },
+  statBoxPurple: {
+    backgroundColor: 'rgba(124, 58, 237, 0.06)',
+    borderColor: '#7C3AED',
+    shadowColor: '#7C3AED',
   },
   statBoxValue: {
     fontSize: 28,
     fontWeight: '800',
-    color: theme.colors.primary,
   },
   statBoxLabel: {
-    fontSize: 11,
+    fontSize: 10,
     color: theme.colors.textSecondary,
-    marginTop: 2,
+    fontWeight: '600',
+    marginTop: 4,
+    letterSpacing: 0.2,
+  },
+  swipeHintRow: {
+    paddingHorizontal: theme.spacing.md,
+    paddingTop: 8,
+    paddingBottom: 4,
+    alignItems: 'center',
   },
   swipeHint: {
     fontSize: 11,
     fontStyle: 'italic',
     color: theme.colors.textSecondary,
-    textAlign: 'center',
-    marginBottom: 8,
   },
   listContent: {
     paddingHorizontal: theme.spacing.md,
     paddingBottom: 32,
+    paddingTop: 12,
   },
   emptyListContent: {
     flexGrow: 1,
@@ -154,6 +207,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginLeft: 8,
+    marginBottom: 10,
   },
   deleteEmoji: {
     fontSize: 20,

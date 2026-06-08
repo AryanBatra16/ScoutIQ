@@ -64,28 +64,36 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
       <View style={styles.header}>
         <Text style={styles.welcomeTitle}>ScoutIQ</Text>
         <Text style={styles.welcomeSubtitle}>SCIENTIFIC TALENT SCOUTING</Text>
+        <View style={styles.headerAccentLine} />
       </View>
 
       {/* Grid of Key Statistics */}
       <View style={styles.statsGrid}>
-        <View style={[styles.statCard, { borderTopColor: theme.colors.primary }]}>
-          <Text style={styles.statNumber}>{totalAthletes}</Text>
+        <View style={[styles.statCard, styles.statCardPurple]}>
+          <View style={styles.statIconBg}>
+            <Text style={styles.statIconEmoji}>🗄️</Text>
+          </View>
+          <Text style={[styles.statNumber, { color: '#7C3AED' }]}>{totalAthletes}</Text>
           <Text style={styles.statLabel}>Total Database</Text>
         </View>
-        <View style={[styles.statCard, { borderTopColor: theme.colors.success }]}>
-          <Text style={[styles.statNumber, { color: theme.colors.success }]}>
-            {shortlistCount}
-          </Text>
+        <View style={[styles.statCard, styles.statCardTeal]}>
+          <View style={[styles.statIconBg, { backgroundColor: 'rgba(13, 148, 136, 0.12)' }]}>
+            <Text style={styles.statIconEmoji}>📋</Text>
+          </View>
+          <Text style={[styles.statNumber, { color: '#0D9488' }]}>{shortlistCount}</Text>
           <Text style={styles.statLabel}>Shortlisted</Text>
         </View>
-        <View style={[styles.statCard, { borderTopColor: theme.colors.warning }]}>
+        <View style={[styles.statCard, styles.statCardAmber]}>
+          <View style={[styles.statIconBg, { backgroundColor: 'rgba(245, 158, 11, 0.12)' }]}>
+            <Text style={styles.statIconEmoji}>📈</Text>
+          </View>
           <Text
             style={[
               styles.statNumber,
-              { color: shortlistCount > 0 ? getScoreColor(avgShortlistScore) : theme.colors.textSecondary },
+              { color: shortlistCount > 0 ? getScoreColor(avgShortlistScore) : '#F59E0B' },
             ]}
           >
-            {shortlistCount > 0 ? avgShortlistScore : '-'}
+            {shortlistCount > 0 ? avgShortlistScore : '—'}
           </Text>
           <Text style={styles.statLabel}>Avg Readiness</Text>
         </View>
@@ -93,21 +101,27 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
 
       {/* Sport Distributions */}
       <View style={styles.sectionCard}>
-        <Text style={styles.sectionLabel}>DATABASE BY SPORT</Text>
+        <View style={styles.sectionHeaderRow}>
+          <Text style={styles.sectionLabel}>DATABASE BY SPORT</Text>
+          <Text style={styles.sectionLabelCount}>{totalAthletes} total</Text>
+        </View>
         {Object.entries(sportCounts).map(([sport, count]) => {
           const sportColor = SPORT_COLORS[sport] ?? theme.colors.primary;
           const percentage = (count / totalAthletes) * 100;
           return (
             <View key={sport} style={styles.sportProgressRow}>
               <View style={styles.sportTextInfo}>
-                <Text style={styles.sportName}>
-                  {SPORT_EMOJIS[sport]} {sport}
-                </Text>
-                <Text style={styles.sportCountText}>
+                <View style={styles.sportNameRow}>
+                  <View style={[styles.sportDot, { backgroundColor: sportColor }]} />
+                  <Text style={styles.sportName}>
+                    {SPORT_EMOJIS[sport]} {sport}
+                  </Text>
+                </View>
+                <Text style={[styles.sportCountText, { color: sportColor }]}>
                   {count} ({Math.round(percentage)}%)
                 </Text>
               </View>
-              <ProgressBar value={percentage} height={6} color={sportColor} />
+              <ProgressBar value={percentage} height={8} color={sportColor} />
             </View>
           );
         })}
@@ -115,7 +129,10 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
 
       {/* Featured Athletes Horizontal Scroll */}
       <View style={styles.featuredSection}>
-        <Text style={styles.sectionLabelLarge}>FEATURED PROSPECTS</Text>
+        <View style={styles.featuredHeader}>
+          <Text style={styles.sectionLabelLarge}>FEATURED PROSPECTS</Text>
+          <Text style={styles.featuredSubtitle}>Score ≥ 85</Text>
+        </View>
         <ScrollView
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -142,16 +159,18 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
                     {SPORT_EMOJIS[athlete.sport]} {athlete.sport}
                   </Text>
                 </View>
-                <Avatar name={athlete.name} size={50} color={avatarColor} />
+                <View style={styles.avatarWrapper}>
+                  <Avatar name={athlete.name} size={54} color={avatarColor} />
+                </View>
                 <Text style={styles.featuredName} numberOfLines={1}>
                   {athlete.name}
                 </Text>
                 <Text style={styles.featuredPosition} numberOfLines={1}>
                   {athlete.position}
                 </Text>
-                <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '15' }]}>
+                <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '18', borderColor: scoreColor + '40' }]}>
                   <Text style={[styles.scoreText, { color: scoreColor }]}>
-                    {athlete.score}
+                    ★ {athlete.score}
                   </Text>
                 </View>
               </TouchableOpacity>
@@ -162,24 +181,25 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
 
       {/* Quick Navigation / CTA Banner */}
       <View style={styles.ctaBanner}>
+        <Text style={styles.ctaEyebrow}>GET STARTED</Text>
         <Text style={styles.ctaTitle}>Ready to Scout?</Text>
         <Text style={styles.ctaSubtitle}>
-          Filter and discover athletes, view performance ratings, and save candidates.
+          Filter and discover athletes, view performance ratings, and save top candidates.
         </Text>
         <View style={styles.ctaActions}>
           <TouchableOpacity
-            style={[styles.ctaButton, { backgroundColor: theme.colors.primary }]}
+            style={[styles.ctaButton, styles.ctaButtonPrimary]}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('Discover')}
           >
-            <Text style={styles.ctaButtonText}>Search Feed 🔭</Text>
+            <Text style={styles.ctaButtonTextPrimary}>🔭  Search Feed</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.ctaButton, { backgroundColor: 'rgba(255, 255, 255, 0.1)' }]}
+            style={[styles.ctaButton, styles.ctaButtonSecondary]}
             activeOpacity={0.8}
             onPress={() => navigation.navigate('Shortlist')}
           >
-            <Text style={[styles.ctaButtonText, { color: '#FFFFFF' }]}>Shortlist 📌</Text>
+            <Text style={styles.ctaButtonTextSecondary}>📌  Shortlist</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -193,100 +213,168 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.background,
   },
   scrollContent: {
-    paddingBottom: 36,
+    paddingBottom: 40,
   },
   header: {
-    backgroundColor: theme.colors.surface,
+    backgroundColor: theme.colors.brandDark,
     paddingHorizontal: theme.spacing.md,
-    paddingTop: 28,
-    paddingBottom: 22,
+    paddingTop: 32,
+    paddingBottom: 28,
     alignItems: 'center',
     justifyContent: 'center',
-    borderBottomWidth: 1,
-    borderColor: theme.colors.border,
+  },
+  welcomeTitle: {
+    fontSize: 32,
+    fontWeight: '800',
+    color: '#FFFFFF',
+    letterSpacing: 1.2,
+    textAlign: 'center',
   },
   welcomeSubtitle: {
     fontSize: 10,
     fontWeight: '700',
-    color: theme.colors.primary,
-    letterSpacing: 1.8,
+    color: 'rgba(255, 255, 255, 0.5)',
+    letterSpacing: 2.5,
     marginTop: 6,
     textAlign: 'center',
   },
-  welcomeTitle: {
-    fontSize: 26,
-    fontWeight: '800',
-    color: theme.colors.text,
-    letterSpacing: 0.8,
-    textAlign: 'center',
+  headerAccentLine: {
+    width: 40,
+    height: 2,
+    backgroundColor: theme.colors.primary,
+    borderRadius: 2,
+    marginTop: 12,
   },
   statsGrid: {
     flexDirection: 'row',
-    padding: theme.spacing.md,
+    paddingHorizontal: theme.spacing.md,
+    paddingTop: 18,
     gap: 10,
   },
   statCard: {
     flex: 1,
-    backgroundColor: theme.colors.surface,
-    borderRadius: 12,
-    padding: 12,
+    borderRadius: 14,
+    paddingVertical: 16,
+    paddingHorizontal: 8,
     alignItems: 'center',
-    borderTopWidth: 4,
-    ...theme.shadow.card,
+    borderWidth: 1.5,
+    shadowOffset: { width: 0, height: 6 },
+    shadowOpacity: 0.14,
+    shadowRadius: 12,
+    elevation: 4,
+  },
+  statCardPurple: {
+    backgroundColor: 'rgba(124, 58, 237, 0.06)',
+    borderColor: '#7C3AED',
+    shadowColor: '#7C3AED',
+  },
+  statCardTeal: {
+    backgroundColor: 'rgba(13, 148, 136, 0.06)',
+    borderColor: '#0D9488',
+    shadowColor: '#0D9488',
+  },
+  statCardAmber: {
+    backgroundColor: 'rgba(245, 158, 11, 0.06)',
+    borderColor: '#F59E0B',
+    shadowColor: '#F59E0B',
+  },
+  statIconBg: {
+    width: 32,
+    height: 32,
+    borderRadius: 10,
+    backgroundColor: 'rgba(124, 58, 237, 0.12)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginBottom: 8,
+  },
+  statIconEmoji: {
+    fontSize: 14,
   },
   statNumber: {
-    fontSize: 24,
+    fontSize: 26,
     fontWeight: '800',
-    color: theme.colors.text,
   },
   statLabel: {
     fontSize: 10,
     color: theme.colors.textSecondary,
-    fontWeight: '500',
-    marginTop: 4,
+    fontWeight: '600',
     textAlign: 'center',
+    marginTop: 3,
+    letterSpacing: 0.2,
   },
   sectionCard: {
     backgroundColor: theme.colors.surface,
     marginHorizontal: theme.spacing.md,
-    borderRadius: 14,
+    marginTop: 18,
+    borderRadius: 16,
     padding: theme.spacing.md,
     ...theme.shadow.card,
   },
+  sectionHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
   sectionLabel: {
-    fontSize: 10,
+    fontSize: 11,
     fontWeight: '700',
     color: theme.colors.textSecondary,
-    letterSpacing: 1,
-    marginBottom: 12,
+    letterSpacing: 1.2,
+  },
+  sectionLabelCount: {
+    fontSize: 11,
+    color: theme.colors.textSecondary,
+    fontWeight: '500',
+  },
+  sportProgressRow: {
+    marginBottom: 14,
+  },
+  sportTextInfo: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 6,
+  },
+  sportNameRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  sportDot: {
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+  },
+  sportName: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: theme.colors.text,
+  },
+  sportCountText: {
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  featuredSection: {
+    marginTop: 22,
+  },
+  featuredHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    paddingHorizontal: theme.spacing.md,
+    marginBottom: 14,
   },
   sectionLabelLarge: {
     fontSize: 11,
     fontWeight: '700',
     color: theme.colors.textSecondary,
-    letterSpacing: 1,
-    paddingHorizontal: theme.spacing.md,
-    marginBottom: 12,
+    letterSpacing: 1.2,
   },
-  sportProgressRow: {
-    marginBottom: 12,
-  },
-  sportTextInfo: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 4,
-  },
-  sportName: {
-    fontSize: 12,
-    fontWeight: '600',
-    color: theme.colors.text,
-  },
-  sportCountText: {
+  featuredSubtitle: {
     fontSize: 11,
-    color: theme.colors.textSecondary,
-  },
-  featuredSection: {
-    marginTop: 20,
+    color: theme.colors.primary,
+    fontWeight: '600',
   },
   featuredContainer: {
     paddingHorizontal: theme.spacing.md,
@@ -295,84 +383,119 @@ const styles = StyleSheet.create({
   },
   featuredCard: {
     backgroundColor: theme.colors.surface,
-    width: 140,
-    borderRadius: 14,
-    padding: 12,
+    width: 148,
+    borderRadius: 16,
+    paddingBottom: 14,
     alignItems: 'center',
     ...theme.shadow.card,
     position: 'relative',
     overflow: 'hidden',
+    borderWidth: 1,
+    borderColor: theme.colors.border,
   },
   cardSportTag: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    paddingVertical: 2,
+    width: '100%',
+    paddingVertical: 5,
     alignItems: 'center',
+    marginBottom: 0,
   },
   sportTagText: {
     fontSize: 9,
     fontWeight: '700',
     color: '#FFFFFF',
+    letterSpacing: 0.5,
+  },
+  avatarWrapper: {
+    marginTop: 14,
+    marginBottom: 2,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.12,
+    shadowRadius: 8,
   },
   featuredName: {
-    fontSize: 12,
+    fontSize: 13,
     fontWeight: '700',
     color: theme.colors.text,
-    marginTop: 20,
+    marginTop: 10,
     textAlign: 'center',
+    paddingHorizontal: 8,
   },
   featuredPosition: {
-    fontSize: 10,
+    fontSize: 11,
     color: theme.colors.textSecondary,
     marginTop: 2,
     textAlign: 'center',
   },
   scoreBadge: {
-    marginTop: 8,
-    paddingVertical: 2,
-    paddingHorizontal: 8,
-    borderRadius: 6,
+    marginTop: 10,
+    paddingVertical: 4,
+    paddingHorizontal: 14,
+    borderRadius: 20,
+    borderWidth: 1.5,
   },
   scoreText: {
     fontSize: 12,
     fontWeight: '700',
   },
   ctaBanner: {
-    margin: theme.spacing.md,
-    backgroundColor: '#1A1A2E',
-    borderRadius: 14,
-    padding: 20,
+    marginHorizontal: theme.spacing.md,
+    marginTop: 22,
+    backgroundColor: theme.colors.brandDark,
+    borderRadius: 18,
+    padding: 22,
     alignItems: 'center',
+    overflow: 'hidden',
+  },
+  ctaEyebrow: {
+    fontSize: 10,
+    fontWeight: '700',
+    color: theme.colors.primary,
+    letterSpacing: 2,
+    marginBottom: 6,
   },
   ctaTitle: {
-    fontSize: 18,
-    fontWeight: '700',
+    fontSize: 22,
+    fontWeight: '800',
     color: '#FFFFFF',
+    letterSpacing: 0.3,
   },
   ctaSubtitle: {
-    fontSize: 12,
-    color: 'rgba(255,255,255,0.7)',
+    fontSize: 13,
+    color: 'rgba(255,255,255,0.6)',
     textAlign: 'center',
-    marginTop: 6,
-    lineHeight: 18,
+    marginTop: 8,
+    lineHeight: 20,
+    maxWidth: 260,
   },
   ctaActions: {
     flexDirection: 'row',
-    gap: 12,
-    marginTop: 16,
+    gap: 10,
+    marginTop: 18,
     width: '100%',
   },
   ctaButton: {
     flex: 1,
-    paddingVertical: 12,
-    borderRadius: 8,
+    paddingVertical: 13,
+    borderRadius: 10,
     alignItems: 'center',
   },
-  ctaButtonText: {
-    fontSize: 12,
+  ctaButtonPrimary: {
+    backgroundColor: theme.colors.primary,
+  },
+  ctaButtonSecondary: {
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.18)',
+  },
+  ctaButtonTextPrimary: {
+    fontSize: 13,
     fontWeight: '700',
     color: '#FFFFFF',
+  },
+  ctaButtonTextSecondary: {
+    fontSize: 13,
+    fontWeight: '600',
+    color: 'rgba(255, 255, 255, 0.85)',
   },
 });
