@@ -155,7 +155,7 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
           <View style={[styles.heroAccent, { backgroundColor: sportColor + '30' }]} />
           <View style={styles.heroContent}>
             <View style={styles.avatarRing}>
-              <Avatar name={athlete.name} size={84} color={avatarColor} />
+              <Avatar name={athlete.name} size={90} color={avatarColor} sport={athlete.sport} gender={athlete.gender} />
             </View>
             <Text style={styles.heroName}>{athlete.name}</Text>
             <View style={[styles.sportBadge, { backgroundColor: sportColor + '22', borderColor: sportColor + '50' }]}>

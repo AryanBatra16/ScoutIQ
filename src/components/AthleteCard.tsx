@@ -21,7 +21,7 @@ export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
       <View style={[styles.sportBar, { backgroundColor: sportColor }]} />
 
       <View style={styles.topRow}>
-        <Avatar name={athlete.name} size={46} color={avatarColor} />
+        <Avatar name={athlete.name} size={46} color={avatarColor} sport={athlete.sport} gender={athlete.gender} />
         <View style={styles.info}>
           <Text style={styles.name}>{athlete.name}</Text>
           <Text style={styles.meta}>

@@ -25,6 +25,7 @@ export type Sport = 'Football' | 'Basketball' | 'Athletics';
 export interface Athlete {
   id: string;
   name: string;
+  gender: 'male' | 'female';
   sport: Sport;
   position: string;
   age: number;

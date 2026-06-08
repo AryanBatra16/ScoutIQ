@@ -2,6 +2,7 @@
   {
     "id": "1",
     "name": "Rahul Sharma",
+    "gender": "male",
     "sport": "Football",
     "position": "Striker",
     "age": 22,
@@ -12,6 +13,7 @@
   {
     "id": "2",
     "name": "Arjun Mehta",
+    "gender": "male",
     "sport": "Football",
     "position": "Midfielder",
     "age": 24,
@@ -22,6 +24,7 @@
   {
     "id": "3",
     "name": "Priya Nair",
+    "gender": "female",
     "sport": "Football",
     "position": "Defender",
     "age": 21,
@@ -32,6 +35,7 @@
   {
     "id": "4",
     "name": "Vikram Patel",
+    "gender": "male",
     "sport": "Football",
     "position": "Goalkeeper",
     "age": 26,
@@ -42,6 +46,7 @@
   {
     "id": "5",
     "name": "Sanya Kapoor",
+    "gender": "female",
     "sport": "Football",
     "position": "Winger",
     "age": 19,
@@ -52,6 +57,7 @@
   {
     "id": "6",
     "name": "Karan Singh",
+    "gender": "male",
     "sport": "Basketball",
     "position": "Point Guard",
     "age": 23,
@@ -62,6 +68,7 @@
   {
     "id": "7",
     "name": "Deepika Rao",
+    "gender": "female",
     "sport": "Basketball",
     "position": "Shooting Guard",
     "age": 20,
@@ -72,6 +79,7 @@
   {
     "id": "8",
     "name": "Manish Kumar",
+    "gender": "male",
     "sport": "Basketball",
     "position": "Small Forward",
     "age": 25,
@@ -82,6 +90,7 @@
   {
     "id": "9",
     "name": "Anaya Verma",
+    "gender": "female",
     "sport": "Basketball",
     "position": "Power Forward",
     "age": 22,
@@ -92,6 +101,7 @@
   {
     "id": "10",
     "name": "Rohan Gupta",
+    "gender": "male",
     "sport": "Basketball",
     "position": "Center",
     "age": 27,
@@ -102,6 +112,7 @@
   {
     "id": "11",
     "name": "Meera Iyer",
+    "gender": "female",
     "sport": "Athletics",
     "position": "Sprinter",
     "age": 20,
@@ -112,6 +123,7 @@
   {
     "id": "12",
     "name": "Aditya Joshi",
+    "gender": "male",
     "sport": "Athletics",
     "position": "Long Distance",
     "age": 24,
@@ -122,6 +134,7 @@
   {
     "id": "13",
     "name": "Lakshmi Reddy",
+    "gender": "female",
     "sport": "Athletics",
     "position": "Hurdler",
     "age": 21,
@@ -132,6 +145,7 @@
   {
     "id": "14",
     "name": "Suresh Nair",
+    "gender": "male",
     "sport": "Athletics",
     "position": "High Jumper",
     "age": 23,
@@ -142,6 +156,7 @@
   {
     "id": "15",
     "name": "Pooja Desai",
+    "gender": "female",
     "sport": "Athletics",
     "position": "Decathlete",
     "age": 25,

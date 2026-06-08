@@ -160,7 +160,7 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
                   </Text>
                 </View>
                 <View style={styles.avatarWrapper}>
-                  <Avatar name={athlete.name} size={54} color={avatarColor} />
+                  <Avatar name={athlete.name} size={54} color={avatarColor} sport={athlete.sport} gender={athlete.gender} />
                 </View>
                 <Text style={styles.featuredName} numberOfLines={1}>
                   {athlete.name}
