@@ -60,7 +60,7 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
 
   return (
     <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
-      {/* Premium Welcome Header */}
+      {/* Light Welcome Header */}
       <View style={styles.header}>
         <Text style={styles.welcomeTitle}>ScoutIQ</Text>
         <Text style={styles.welcomeSubtitle}>SCIENTIFIC TALENT SCOUTING</Text>
@@ -216,24 +216,26 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   header: {
-    backgroundColor: theme.colors.brandDark,
+    backgroundColor: theme.colors.headerBg,
     paddingHorizontal: theme.spacing.md,
     paddingTop: 32,
     paddingBottom: 28,
     alignItems: 'center',
     justifyContent: 'center',
+    borderBottomWidth: 1,
+    borderColor: theme.colors.headerBorder,
   },
   welcomeTitle: {
     fontSize: 32,
     fontWeight: '800',
-    color: '#FFFFFF',
+    color: theme.colors.text,
     letterSpacing: 1.2,
     textAlign: 'center',
   },
   welcomeSubtitle: {
     fontSize: 10,
     fontWeight: '700',
-    color: 'rgba(255, 255, 255, 0.5)',
+    color: theme.colors.textSecondary,
     letterSpacing: 2.5,
     marginTop: 6,
     textAlign: 'center',
@@ -441,7 +443,7 @@ const styles = StyleSheet.create({
   ctaBanner: {
     marginHorizontal: theme.spacing.md,
     marginTop: 22,
-    backgroundColor: theme.colors.brandDark,
+    backgroundColor: '#2D1266',
     borderRadius: 18,
     padding: 22,
     alignItems: 'center',
@@ -450,7 +452,7 @@ const styles = StyleSheet.create({
   ctaEyebrow: {
     fontSize: 10,
     fontWeight: '700',
-    color: theme.colors.primary,
+    color: '#C4B5FD',
     letterSpacing: 2,
     marginBottom: 6,
   },
@@ -481,12 +483,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   ctaButtonPrimary: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: '#7C3AED',
+    shadowColor: '#A855F7',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.4,
+    shadowRadius: 10,
+    elevation: 4,
   },
   ctaButtonSecondary: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.08)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.18)',
+    borderColor: 'rgba(255, 255, 255, 0.22)',
   },
   ctaButtonTextPrimary: {
     fontSize: 13,

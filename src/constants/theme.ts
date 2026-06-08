@@ -12,7 +12,10 @@ export const theme = {
     warning: '#F59E0B',         // Amber warning
     danger: '#EF4444',          // Red danger
     scoreTrack: '#E6E2D8',      // Progress track color
-    brandDark: '#1A252C',       // Dark Slate theme base
+    brandDark: '#1A252C',       // Dark Slate — used for CTA banners & toasts
+    headerBg: '#FFFFFF',        // Light header / tab bar background
+    headerBorder: '#EDE8DF',    // Subtle warm divider line
+    headerText: '#1E293B',      // Dark text on light header
   },
   spacing: { xs: 4, sm: 8, md: 16, lg: 24, xl: 32, xxl: 48 },
   fontSizes: { xs: 11, sm: 13, md: 15, lg: 18, xl: 22, xxl: 28 },

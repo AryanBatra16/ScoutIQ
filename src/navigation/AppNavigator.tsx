@@ -21,14 +21,16 @@ const ShortlistStack = createNativeStackNavigator<ShortlistStackParamList>();
 
 const headerOptions = {
   headerStyle: {
-    backgroundColor: theme.colors.brandDark,
+    backgroundColor: theme.colors.headerBg,
   },
-  headerTintColor: theme.colors.textInverse,
+  headerTintColor: theme.colors.primary,
   headerTitleStyle: {
     fontWeight: '700' as const,
     fontSize: 18,
+    color: theme.colors.headerText,
   },
   headerShadowVisible: false,
+  headerBorderBottomColor: theme.colors.headerBorder,
 };
 
 interface ShortlistProps {
@@ -69,15 +71,15 @@ export function AppNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: theme.colors.brandDark,
-          borderTopColor: 'rgba(255, 255, 255, 0.08)',
+          backgroundColor: theme.colors.headerBg,
+          borderTopColor: theme.colors.headerBorder,
           borderTopWidth: 1,
           height: 62,
           paddingBottom: 8,
           paddingTop: 6,
         },
-        tabBarActiveTintColor: '#FFFFFF',
-        tabBarInactiveTintColor: 'rgba(255,255,255,0.4)',
+        tabBarActiveTintColor: theme.colors.primary,
+        tabBarInactiveTintColor: '#A0AABB',
         tabBarLabelStyle: {
           fontSize: 11,
           fontWeight: '700',
