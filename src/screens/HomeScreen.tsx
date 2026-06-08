@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: theme.colors.headerBg,
     paddingHorizontal: theme.spacing.md,
-    paddingTop: 32,
+    paddingTop: 54,
     paddingBottom: 28,
     alignItems: 'center',
     justifyContent: 'center',
