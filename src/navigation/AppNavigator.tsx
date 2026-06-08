@@ -75,9 +75,9 @@ export function AppNavigator() {
           backgroundColor: theme.colors.headerBg,
           borderTopColor: theme.colors.headerBorder,
           borderTopWidth: 1,
-          height: 80,
-          paddingBottom: 14,
-          paddingTop: 8,
+          height: 64,
+          paddingBottom: 6,
+          paddingTop: 6,
         },
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: '#94A3B8',
@@ -85,15 +85,13 @@ export function AppNavigator() {
           fontSize: 11,
           fontWeight: '700',
           letterSpacing: 0.2,
-          marginTop: 4,
-          color: undefined, // inherit from tint color
+          marginTop: 2,
         },
         tabBarActiveBackgroundColor: 'transparent',
         tabBarItemStyle: {
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          paddingVertical: 4,
         },
       }}
     >
