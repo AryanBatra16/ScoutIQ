@@ -71,12 +71,13 @@ export function AppNavigator() {
       screenOptions={{
         headerShown: false,
         tabBarShowLabel: true,
+        tabBarLabelPosition: 'below-icon',
         tabBarStyle: {
           backgroundColor: theme.colors.headerBg,
           borderTopColor: theme.colors.headerBorder,
           borderTopWidth: 1,
-          height: 64,
-          paddingBottom: 6,
+          height: 68,
+          paddingBottom: 8,
           paddingTop: 6,
         },
         tabBarActiveTintColor: theme.colors.primary,
@@ -93,6 +94,7 @@ export function AppNavigator() {
           alignItems: 'center',
           justifyContent: 'center',
         },
+        safeAreaInsets: { bottom: 0 },
       }}
     >
       <Tab.Screen
