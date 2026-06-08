@@ -1,0 +1,152 @@
+[
+  {
+    "id": "1",
+    "name": "Rahul Sharma",
+    "sport": "Football",
+    "position": "Striker",
+    "age": 22,
+    "bio": "A prolific striker from Mumbai who led the state league in goals for two consecutive seasons and earned a call-up to the national U-23 camp.",
+    "stats": { "speed": 88, "stamina": 76, "accuracy": 91, "dribbling": 83 },
+    "score": 85
+  },
+  {
+    "id": "2",
+    "name": "Arjun Mehta",
+    "sport": "Football",
+    "position": "Midfielder",
+    "age": 24,
+    "bio": "A tireless midfielder from Pune known for orchestrating play from the center and recording the most assists in the regional tournament.",
+    "stats": { "speed": 74, "stamina": 85, "accuracy": 79, "dribbling": 72 },
+    "score": 78
+  },
+  {
+    "id": "3",
+    "name": "Priya Nair",
+    "sport": "Football",
+    "position": "Defender",
+    "age": 21,
+    "bio": "A commanding centre-back from Kerala who anchored her college team's backline and was named Defensive Player of the Year at the inter-university championship.",
+    "stats": { "speed": 68, "stamina": 80, "accuracy": 65, "dribbling": 70 },
+    "score": 71
+  },
+  {
+    "id": "4",
+    "name": "Vikram Patel",
+    "sport": "Football",
+    "position": "Goalkeeper",
+    "age": 26,
+    "bio": "An experienced shot-stopper from Gujarat with over 150 clean sheets across club and state-level competitions, renowned for his positioning and reflexes.",
+    "stats": { "speed": 55, "stamina": 70, "accuracy": 68, "dribbling": 58 },
+    "score": 63
+  },
+  {
+    "id": "5",
+    "name": "Sanya Kapoor",
+    "sport": "Football",
+    "position": "Winger",
+    "age": 19,
+    "bio": "A electrifying young winger from Delhi whose pace and trickery on the flanks earned her the Young Player of the Tournament award at the national U-19 championship.",
+    "stats": { "speed": 95, "stamina": 88, "accuracy": 90, "dribbling": 92 },
+    "score": 91
+  },
+  {
+    "id": "6",
+    "name": "Karan Singh",
+    "sport": "Basketball",
+    "position": "Point Guard",
+    "age": 23,
+    "bio": "A dynamic point guard from Chandigarh who averaged a double-double in the national league and led his team to back-to-back final four appearances.",
+    "stats": { "speed": 90, "verticalJump": 85, "threePointAcc": 91, "defense": 86 },
+    "score": 88
+  },
+  {
+    "id": "7",
+    "name": "Deepika Rao",
+    "sport": "Basketball",
+    "position": "Shooting Guard",
+    "age": 20,
+    "bio": "A sharp-shooting guard from Bengaluru who broke the state three-point record in her rookie season and was selected for the national development squad.",
+    "stats": { "speed": 78, "verticalJump": 70, "threePointAcc": 80, "defense": 68 },
+    "score": 74
+  },
+  {
+    "id": "8",
+    "name": "Manish Kumar",
+    "sport": "Basketball",
+    "position": "Small Forward",
+    "age": 25,
+    "bio": "A versatile forward from Patna with a strong mid-range game and five years of experience in the national league, known for his consistency on both ends.",
+    "stats": { "speed": 65, "verticalJump": 72, "threePointAcc": 63, "defense": 68 },
+    "score": 67
+  },
+  {
+    "id": "9",
+    "name": "Anaya Verma",
+    "sport": "Basketball",
+    "position": "Power Forward",
+    "age": 22,
+    "bio": "A dominant power forward from Indore who led the national league in rebounds and was voted Most Valuable Player at the inter-state championship.",
+    "stats": { "speed": 76, "verticalJump": 88, "threePointAcc": 74, "defense": 83 },
+    "score": 80
+  },
+  {
+    "id": "10",
+    "name": "Rohan Gupta",
+    "sport": "Basketball",
+    "position": "Center",
+    "age": 27,
+    "bio": "A towering center from Jaipur with seven seasons of professional experience, anchoring the paint with elite rim protection and solid post moves.",
+    "stats": { "speed": 50, "verticalJump": 65, "threePointAcc": 55, "defense": 62 },
+    "score": 58
+  },
+  {
+    "id": "11",
+    "name": "Meera Iyer",
+    "sport": "Athletics",
+    "position": "Sprinter",
+    "age": 20,
+    "bio": "A blazing sprinter from Chennai who broke the national 100m record at age 19 and became the youngest Indian to qualify for the World Athletics Championships.",
+    "stats": { "speed": 98, "endurance": 89, "reactionTime": 94, "agility": 92 },
+    "score": 93
+  },
+  {
+    "id": "12",
+    "name": "Aditya Joshi",
+    "sport": "Athletics",
+    "position": "Long Distance",
+    "age": 24,
+    "bio": "A gritty long-distance runner from Dehradun who won the national 10,000m title three years running and represented India at the Asian Games.",
+    "stats": { "speed": 70, "endurance": 92, "reactionTime": 68, "agility": 74 },
+    "score": 76
+  },
+  {
+    "id": "13",
+    "name": "Lakshmi Reddy",
+    "sport": "Athletics",
+    "position": "Hurdler",
+    "age": 21,
+    "bio": "A technical hurdler from Hyderabad who claimed gold at the South Asian Games and holds the state record in the 100m hurdles.",
+    "stats": { "speed": 85, "endurance": 78, "reactionTime": 86, "agility": 80 },
+    "score": 82
+  },
+  {
+    "id": "14",
+    "name": "Suresh Nair",
+    "sport": "Athletics",
+    "position": "High Jumper",
+    "age": 23,
+    "bio": "A high jumper from Kochi who cleared 2.25m at the national championship and earned a silver medal at the Asian Indoor Athletics meet.",
+    "stats": { "speed": 65, "endurance": 62, "reactionTime": 74, "agility": 75 },
+    "score": 69
+  },
+  {
+    "id": "15",
+    "name": "Pooja Desai",
+    "sport": "Athletics",
+    "position": "Decathlete",
+    "age": 25,
+    "bio": "A versatile decathlete from Nagpur who competes across ten events and placed fourth at the national championship, showcasing remarkable all-round ability.",
+    "stats": { "speed": 58, "endurance": 60, "reactionTime": 50, "agility": 52 },
+    "score": 55
+  }
+]
