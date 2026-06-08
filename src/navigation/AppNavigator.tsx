@@ -74,9 +74,9 @@ export function AppNavigator() {
           backgroundColor: theme.colors.headerBg,
           borderTopColor: theme.colors.headerBorder,
           borderTopWidth: 1,
-          height: 62,
-          paddingBottom: 8,
-          paddingTop: 6,
+          height: 72,
+          paddingBottom: 12,
+          paddingTop: 8,
         },
         tabBarActiveTintColor: theme.colors.primary,
         tabBarInactiveTintColor: '#A0AABB',
@@ -84,18 +84,22 @@ export function AppNavigator() {
           fontSize: 11,
           fontWeight: '700',
           letterSpacing: 0.3,
+          marginTop: 2,
         },
         tabBarActiveBackgroundColor: 'transparent',
         tabBarItemStyle: {
           borderRadius: 10,
+          paddingVertical: 4,
         },
       }}
     >
       <Tab.Screen
         name="Home"
         options={{
+          tabBarLabel: 'Home',
+          tabBarShowLabel: true,
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="home" size={size - 1} color={color} />
+            <Ionicons name="home" size={size} color={color} />
           ),
         }}
       >
@@ -104,8 +108,10 @@ export function AppNavigator() {
       <Tab.Screen
         name="Discover"
         options={{
+          tabBarLabel: 'Discover',
+          tabBarShowLabel: true,
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="compass" size={size - 1} color={color} />
+            <Ionicons name="compass" size={size} color={color} />
           ),
         }}
       >
@@ -114,8 +120,10 @@ export function AppNavigator() {
       <Tab.Screen
         name="Shortlist"
         options={{
+          tabBarLabel: 'Shortlist',
+          tabBarShowLabel: true,
           tabBarIcon: ({ size, color }) => (
-            <Ionicons name="bookmark" size={size - 1} color={color} />
+            <Ionicons name="bookmark" size={size} color={color} />
           ),
           tabBarBadge:
             shortlistProps.shortlist.length > 0
