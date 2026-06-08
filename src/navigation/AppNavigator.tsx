@@ -1,5 +1,4 @@
 import React from 'react';
-import { Platform } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { Ionicons } from '@expo/vector-icons';
@@ -14,6 +13,7 @@ import type {
 import { DiscoverScreen } from '@/screens/DiscoverScreen';
 import { ProfileScreen } from '@/screens/ProfileScreen';
 import { ShortlistScreen } from '@/screens/ShortlistScreen';
+import { HomeScreen } from '@/screens/HomeScreen';
 
 const Tab = createBottomTabNavigator<RootTabParamList>();
 const DiscoverStack = createNativeStackNavigator<DiscoverStackParamList>();
@@ -83,6 +83,16 @@ export function AppNavigator() {
         },
       }}
     >
+      <Tab.Screen
+        name="Home"
+        options={{
+          tabBarIcon: ({ size, color }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      >
+        {(props) => <HomeScreen {...props} shortlistProps={shortlistProps} />}
+      </Tab.Screen>
       <Tab.Screen
         name="Discover"
         options={{

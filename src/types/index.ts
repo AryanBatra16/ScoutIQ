@@ -34,6 +34,7 @@ export interface Athlete {
 }
 
 export type RootTabParamList = {
+  Home: undefined;
   Discover: undefined;
   Shortlist: undefined;
 };

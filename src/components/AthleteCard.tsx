@@ -3,29 +3,20 @@ import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Avatar } from './Avatar';
 import { ProgressBar } from './ProgressBar';
 import { theme, AVATAR_COLORS, SPORT_COLORS, SPORT_EMOJIS, getScoreColor } from '@/constants/theme';
-import type { Athlete, SportStats } from '@/types';
-import { isFootballStats, isBasketballStats, isAthleticsStats } from '@/types';
+import type { Athlete } from '@/types';
 
 interface AthleteCardProps {
   athlete: Athlete;
   onPress: () => void;
 }
 
-function getPrimaryStat(stats: SportStats): { label: string; value: number } {
-  if (isFootballStats(stats)) return { label: 'Speed', value: stats.speed };
-  if (isBasketballStats(stats)) return { label: 'Speed', value: stats.speed };
-  if (isAthleticsStats(stats)) return { label: 'Speed', value: stats.speed };
-  return { label: 'Speed', value: 0 };
-}
-
 export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
   const avatarColor = AVATAR_COLORS[parseInt(athlete.id, 10) % AVATAR_COLORS.length];
   const sportColor = SPORT_COLORS[athlete.sport] ?? theme.colors.primary;
   const scoreColor = getScoreColor(athlete.score);
-  const primaryStat = getPrimaryStat(athlete.stats);
 
   return (
-    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.85}>
+    <TouchableOpacity style={styles.card} onPress={onPress} activeOpacity={0.75}>
       <View style={[styles.sportBar, { backgroundColor: sportColor }]} />
       <View style={styles.topRow}>
         <Avatar name={athlete.name} size={44} color={avatarColor} />
@@ -35,24 +26,18 @@ export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
             {SPORT_EMOJIS[athlete.sport]} {athlete.sport} · {athlete.position} · Age {athlete.age}
           </Text>
         </View>
-        <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '26' }]}>
+        <View style={[styles.scoreBadge, { backgroundColor: scoreColor + '1A' }]}>
           <Text style={[styles.scoreText, { color: scoreColor }]}>{athlete.score}</Text>
         </View>
       </View>
-      <View style={styles.divider} />
       <View style={styles.bottomRow}>
         <Text style={styles.scoreLabel}>Score</Text>
         <View style={styles.progressBarWrap}>
-          <ProgressBar value={athlete.score} height={5} color={scoreColor} />
+          <ProgressBar value={athlete.score} height={6} color={scoreColor} />
         </View>
-        <Text style={[styles.scoreValueSmall, { color: scoreColor }]}>{athlete.score}</Text>
-      </View>
-      <View style={styles.statRow}>
-        <Text style={styles.statLabel}>{primaryStat.label}</Text>
-        <View style={styles.statBarWrap}>
-          <ProgressBar value={primaryStat.value} height={4} color={sportColor} />
-        </View>
-        <Text style={[styles.statValue, { color: sportColor }]}>{primaryStat.value}</Text>
+        <Text style={[styles.scoreValueSmall, { color: scoreColor }]}>
+          {athlete.score}/100
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -61,11 +46,11 @@ export function AthleteCard({ athlete, onPress }: AthleteCardProps) {
 const styles = StyleSheet.create({
   card: {
     backgroundColor: theme.colors.surface,
-    borderRadius: 16,
+    borderRadius: 12,
     borderWidth: 1,
     borderColor: theme.colors.border,
-    padding: 14,
-    marginBottom: 12,
+    padding: 12,
+    marginBottom: 10,
     ...theme.shadow.card,
     overflow: 'hidden',
   },
@@ -75,8 +60,8 @@ const styles = StyleSheet.create({
     top: 0,
     bottom: 0,
     width: 4,
-    borderTopLeftRadius: 16,
-    borderBottomLeftRadius: 16,
+    borderTopLeftRadius: 12,
+    borderBottomLeftRadius: 12,
   },
   topRow: {
     flexDirection: 'row',
@@ -87,7 +72,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   name: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
     color: theme.colors.text,
   },
@@ -97,58 +82,36 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   scoreBadge: {
-    width: 40,
-    height: 40,
-    borderRadius: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 8,
     justifyContent: 'center',
     alignItems: 'center',
   },
   scoreText: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: '700',
-  },
-  divider: {
-    height: 1,
-    backgroundColor: theme.colors.border,
-    marginVertical: 10,
   },
   bottomRow: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginTop: 10,
+    paddingLeft: 4,
   },
   scoreLabel: {
     fontSize: 11,
+    fontWeight: '500',
     color: theme.colors.textSecondary,
     width: 40,
   },
   progressBarWrap: {
     flex: 1,
-    marginHorizontal: 6,
+    marginHorizontal: 8,
   },
   scoreValueSmall: {
     fontSize: 11,
     fontWeight: '600',
-    width: 24,
-    textAlign: 'right',
-  },
-  statRow: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 6,
-  },
-  statLabel: {
-    fontSize: 11,
-    color: theme.colors.textSecondary,
-    width: 40,
-  },
-  statBarWrap: {
-    flex: 1,
-    marginHorizontal: 6,
-  },
-  statValue: {
-    fontSize: 11,
-    fontWeight: '600',
-    width: 24,
+    width: 48,
     textAlign: 'right',
   },
 });

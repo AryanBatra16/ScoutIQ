@@ -6,7 +6,6 @@ import {
   ScrollView,
   FlatList,
   StyleSheet,
-  Keyboard,
 } from 'react-native';
 import type { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AthleteCard } from '@/components/AthleteCard';
@@ -24,7 +23,7 @@ interface Props extends NativeStackScreenProps<DiscoverStackParamList, 'Feed'> {
   shortlistProps: UseShortlistReturn;
 }
 
-const FILTERS: Array<{ label: string; value: Sport | 'All' }> = [
+const FILTERS: { label: string; value: Sport | 'All' }[] = [
   { label: 'All', value: 'All' },
   { label: `${SPORT_EMOJIS.Football} Football`, value: 'Football' },
   { label: `${SPORT_EMOJIS.Basketball} Basketball`, value: 'Basketball' },

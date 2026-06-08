@@ -1,6 +1,8 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 
+import { getInitials } from '@/constants/theme';
+
 interface AvatarProps {
   name: string;
   size: number;
@@ -8,12 +10,7 @@ interface AvatarProps {
 }
 
 export function Avatar({ name, size, color }: AvatarProps) {
-  const initials = name
-    .split(' ')
-    .map((word) => word[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
+  const initials = getInitials(name);
 
   return (
     <View
@@ -27,7 +24,7 @@ export function Avatar({ name, size, color }: AvatarProps) {
         },
       ]}
     >
-      <Text style={[styles.initials, { fontSize: Math.round(size / 2.8) }]}>
+      <Text style={[styles.initials, { fontSize: Math.round(size * 0.36) }]}>
         {initials}
       </Text>
     </View>

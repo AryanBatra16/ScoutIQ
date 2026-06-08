@@ -44,8 +44,8 @@ export const AVATAR_COLORS = [
 
 export const SPORT_COLORS: Record<string, string> = {
   Football: '#10B981',
-  Basketball: '#F59E0B',
-  Athletics: '#6C63FF',
+  Basketball: '#F97316',
+  Athletics: '#3B82F6',
 };
 
 export const SPORT_EMOJIS: Record<string, string> = {
@@ -58,4 +58,15 @@ export const getScoreColor = (score: number): string => {
   if (score >= 80) return theme.colors.success;
   if (score >= 60) return theme.colors.warning;
   return theme.colors.danger;
+};
+
+export const getInitials = (name: string): string => {
+  const parts = name.trim().split(' ');
+  if (parts.length === 1) return parts[0][0].toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+};
+
+export const getAvatarColor = (id: string): string => {
+  const index = parseInt(id, 10) % AVATAR_COLORS.length;
+  return AVATAR_COLORS[index];
 };

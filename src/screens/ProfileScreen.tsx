@@ -38,6 +38,19 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
   const athlete = athletes.find((a) => a.id === athleteId);
   const buttonScale = useRef(new Animated.Value(1)).current;
 
+  const [toastMessage, setToastMessage] = React.useState('');
+  const [toastType, setToastType] = React.useState<'add' | 'remove'>('add');
+  const toastTranslateY = useRef(new Animated.Value(120)).current;
+  const toastTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+
+  React.useEffect(() => {
+    return () => {
+      if (toastTimeoutRef.current) {
+        clearTimeout(toastTimeoutRef.current);
+      }
+    };
+  }, []);
+
   if (!athlete) {
     return (
       <View style={styles.errorContainer}>
@@ -53,6 +66,31 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
 
   const readinessLabel =
     athlete.score >= 80 ? 'High Readiness' : athlete.score >= 60 ? 'Mid Readiness' : 'Low Readiness';
+
+  const triggerToast = (type: 'add' | 'remove') => {
+    if (toastTimeoutRef.current) {
+      clearTimeout(toastTimeoutRef.current);
+    }
+    setToastType(type);
+    setToastMessage(type === 'add' ? 'Added to shortlist' : 'Removed from shortlist');
+
+    // Slide up
+    Animated.spring(toastTranslateY, {
+      toValue: 0,
+      tension: 60,
+      friction: 8,
+      useNativeDriver: true,
+    }).start();
+
+    // Auto-dismiss
+    toastTimeoutRef.current = setTimeout(() => {
+      Animated.timing(toastTranslateY, {
+        toValue: 120,
+        duration: 250,
+        useNativeDriver: true,
+      }).start();
+    }, 2000);
+  };
 
   const handleButtonPressIn = () => {
     Animated.spring(buttonScale, {
@@ -105,56 +143,82 @@ export function ProfileScreen({ route, shortlistProps }: ProfileProps) {
   };
 
   return (
-    <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
-      <View style={styles.hero}>
-        <Avatar name={athlete.name} size={80} color={avatarColor} />
-        <Text style={styles.heroName}>{athlete.name}</Text>
-        <View style={[styles.sportBadge, { backgroundColor: sportColor + '26' }]}>
-          <Text style={[styles.sportBadgeText, { color: sportColor }]}>
-            {SPORT_EMOJIS[athlete.sport]} {athlete.sport} · {athlete.position}
-          </Text>
+    <View style={{ flex: 1 }}>
+      <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent}>
+        <View style={styles.hero}>
+          <Avatar name={athlete.name} size={80} color={avatarColor} />
+          <Text style={styles.heroName}>{athlete.name}</Text>
+          <View style={[styles.sportBadge, { backgroundColor: sportColor + '26' }]}>
+            <Text style={[styles.sportBadgeText, { color: sportColor }]}>
+              {SPORT_EMOJIS[athlete.sport]} {athlete.sport} · {athlete.position}
+            </Text>
+          </View>
+          <Text style={styles.heroAge}>Age {athlete.age}</Text>
+          <Text style={styles.heroEmoji}>{SPORT_EMOJIS[athlete.sport]}</Text>
         </View>
-        <Text style={styles.heroAge}>Age {athlete.age}</Text>
-        <Text style={styles.heroEmoji}>{SPORT_EMOJIS[athlete.sport]}</Text>
-      </View>
 
-      <View style={styles.card}>
-        <Text style={styles.sectionLabel}>OVERALL READINESS</Text>
-        <View style={styles.scoreRow}>
-          <Text style={[styles.scoreBig, { color: scoreColor }]}>{athlete.score}</Text>
-          <Text style={styles.scoreOutOf}>/ 100</Text>
+        <View style={styles.card}>
+          <Text style={styles.sectionLabel}>OVERALL READINESS</Text>
+          <View style={styles.scoreRow}>
+            <Text style={[styles.scoreBig, { color: scoreColor }]}>{athlete.score}</Text>
+            <Text style={styles.scoreOutOf}>/ 100</Text>
+          </View>
+          <ProgressBar value={athlete.score} height={12} color={scoreColor} />
+          <Text style={[styles.readinessLabel, { color: scoreColor }]}>{readinessLabel}</Text>
         </View>
-        <ProgressBar value={athlete.score} height={12} color={scoreColor} />
-        <Text style={[styles.readinessLabel, { color: scoreColor }]}>{readinessLabel}</Text>
-      </View>
 
-      <View style={[styles.card, { marginTop: 0 }]}>
-        <Text style={styles.sectionTitle}>{athlete.sport} Stats</Text>
-        {renderStats()}
-      </View>
+        <View style={[styles.card, { marginTop: 0 }]}>
+          <Text style={styles.sectionTitle}>{athlete.sport} Stats</Text>
+          {renderStats()}
+        </View>
 
-      <View style={[styles.card, { marginTop: 0 }]}>
-        <Text style={styles.sectionTitle}>Biography</Text>
-        <Text style={styles.bioText}>{athlete.bio}</Text>
-      </View>
+        <View style={[styles.card, { marginTop: 0 }]}>
+          <Text style={styles.sectionTitle}>Biography</Text>
+          <Text style={styles.bioText}>{athlete.bio}</Text>
+        </View>
 
-      <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
-        <TouchableOpacity
+        <Animated.View style={{ transform: [{ scale: buttonScale }] }}>
+          <TouchableOpacity
+            style={[
+              styles.shortlistButton,
+              { backgroundColor: shortlisted ? theme.colors.danger : theme.colors.primary },
+            ]}
+            onPress={() => {
+              shortlistProps.toggleShortlist(athlete);
+              triggerToast(!shortlisted ? 'add' : 'remove');
+            }}
+            onPressIn={handleButtonPressIn}
+            onPressOut={handleButtonPressOut}
+            activeOpacity={0.9}
+          >
+            <Text style={styles.shortlistButtonText}>
+              {shortlisted ? '✓ Remove from Shortlist' : '+ Add to Shortlist'}
+            </Text>
+          </TouchableOpacity>
+        </Animated.View>
+      </ScrollView>
+
+      {/* Floating Toast Notification */}
+      <Animated.View
+        style={[
+          styles.toast,
+          {
+            transform: [{ translateY: toastTranslateY }],
+            backgroundColor: toastType === 'add' ? '#1A1A2E' : '#3B3B4F',
+          },
+        ]}
+      >
+        <View
           style={[
-            styles.shortlistButton,
-            { backgroundColor: shortlisted ? theme.colors.danger : theme.colors.primary },
+            styles.toastCheckCircle,
+            { backgroundColor: toastType === 'add' ? theme.colors.success : theme.colors.danger },
           ]}
-          onPress={() => shortlistProps.toggleShortlist(athlete)}
-          onPressIn={handleButtonPressIn}
-          onPressOut={handleButtonPressOut}
-          activeOpacity={0.9}
         >
-          <Text style={styles.shortlistButtonText}>
-            {shortlisted ? '✓ Remove from Shortlist' : '+ Add to Shortlist'}
-          </Text>
-        </TouchableOpacity>
+          <Text style={styles.toastCheckIcon}>{toastType === 'add' ? '✓' : '✕'}</Text>
+        </View>
+        <Text style={styles.toastText}>{toastMessage}</Text>
       </Animated.View>
-    </ScrollView>
+    </View>
   );
 }
 
@@ -266,5 +330,40 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '700',
     color: theme.colors.textInverse,
+  },
+  toast: {
+    position: 'absolute',
+    bottom: 24,
+    left: theme.spacing.md,
+    right: theme.spacing.md,
+    borderRadius: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 16,
+    flexDirection: 'row',
+    alignItems: 'center',
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+  },
+  toastText: {
+    fontSize: 13,
+    fontWeight: '500',
+    color: '#FFFFFF',
+    marginLeft: 10,
+    flex: 1,
+  },
+  toastCheckCircle: {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  toastCheckIcon: {
+    color: '#FFFFFF',
+    fontSize: 11,
+    fontWeight: 'bold',
   },
 });

@@ -1,0 +1,745 @@
+
+<h2 class="sr-only">ScoutIQ complete app flow — all screens, states, transitions, and edge cases</h2>
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  .flow-wrap {
+    font-size: 13px;
+    color: var(--color-text-primary);
+    padding: 1rem 0 2rem;
+  }
+
+  .section-label {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-text-tertiary);
+    margin: 2rem 0 0.75rem;
+    padding-left: 2px;
+  }
+
+  .row {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+    align-items: flex-start;
+  }
+
+  .screen {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 12px 14px;
+    flex: 1;
+    min-width: 0;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    position: relative;
+  }
+  .screen:hover { border-color: var(--color-border-primary); background: var(--color-background-secondary); }
+  .screen.active { border-color: #534AB7; border-width: 1.5px; background: #EEEDFE; }
+  @media (prefers-color-scheme: dark) {
+    .screen.active { background: #26215C; border-color: #7F77DD; }
+  }
+
+  .screen-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .badge {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 20px;
+    line-height: 1.4;
+  }
+  .badge-purple { background: #EEEDFE; color: #3C3489; }
+  .badge-teal   { background: #E1F5EE; color: #0F6E56; }
+  .badge-amber  { background: #FAEEDA; color: #854F0B; }
+  .badge-red    { background: #FCEBEB; color: #A32D2D; }
+  .badge-gray   { background: var(--color-background-secondary); color: var(--color-text-secondary); }
+  @media (prefers-color-scheme: dark) {
+    .badge-purple { background: #26215C; color: #AFA9EC; }
+    .badge-teal   { background: #04342C; color: #5DCAA5; }
+    .badge-amber  { background: #412402; color: #EF9F27; }
+    .badge-red    { background: #501313; color: #F09595; }
+  }
+
+  .screen-detail {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.55;
+  }
+  .screen-detail li {
+    list-style: none;
+    padding-left: 10px;
+    position: relative;
+    margin-bottom: 2px;
+  }
+  .screen-detail li::before {
+    content: '·';
+    position: absolute;
+    left: 2px;
+    color: var(--color-text-tertiary);
+  }
+
+  .arrow-col {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 18px;
+    flex-shrink: 0;
+    width: 28px;
+    color: var(--color-text-tertiary);
+    font-size: 16px;
+  }
+  .arrow-down {
+    display: flex;
+    justify-content: center;
+    color: var(--color-text-tertiary);
+    font-size: 16px;
+    margin: 2px 0 4px;
+    padding-left: 14px;
+  }
+
+  .connector {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    padding: 3px 0 3px 14px;
+    font-style: italic;
+  }
+  .connector::before {
+    content: '';
+    width: 20px;
+    height: 1px;
+    background: var(--color-border-secondary);
+    flex-shrink: 0;
+  }
+
+  .state-row {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .state-box {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 8px 12px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .state-box-title {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    margin-bottom: 4px;
+  }
+  .state-box-detail {
+    font-size: 11px;
+    color: var(--color-text-tertiary);
+    line-height: 1.5;
+  }
+
+  .flow-line {
+    display: flex;
+    align-items: stretch;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+  .flow-line-bar {
+    width: 2px;
+    background: var(--color-border-tertiary);
+    border-radius: 2px;
+    flex-shrink: 0;
+    margin: 4px 0;
+  }
+  .flow-line-bar.purple { background: #7F77DD; }
+  .flow-line-bar.teal   { background: #1D9E75; }
+  .flow-line-bar.amber  { background: #BA7517; }
+  .flow-line-bar.red    { background: #E24B4A; }
+
+  .flow-line-content {
+    flex: 1;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    padding: 2px 0;
+  }
+
+  .nav-structure {
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-lg);
+    padding: 14px 16px;
+    margin-bottom: 10px;
+  }
+
+  .tab-bar {
+    display: flex;
+    gap: 6px;
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 6px;
+    margin-bottom: 10px;
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 4px;
+    border-radius: 6px;
+    color: var(--color-text-secondary);
+    transition: background 0.15s, color 0.15s;
+    cursor: pointer;
+    position: relative;
+  }
+  .tab.active { background: #EEEDFE; color: #3C3489; }
+  @media (prefers-color-scheme: dark) { .tab.active { background: #26215C; color: #AFA9EC; } }
+  .tab-badge {
+    position: absolute;
+    top: 2px; right: 6px;
+    background: #534AB7;
+    color: #fff;
+    font-size: 9px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+
+  .detail-panel {
+    display: none;
+    margin-top: 6px;
+    padding: 10px 12px;
+    background: var(--color-background-secondary);
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    line-height: 1.6;
+    animation: fadeIn 0.15s ease;
+  }
+  .detail-panel.open { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: translateY(0); } }
+
+  .detail-panel h4 {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-primary);
+    margin-bottom: 6px;
+    margin-top: 8px;
+  }
+  .detail-panel h4:first-child { margin-top: 0; }
+
+  .pill-row {
+    display: flex;
+    gap: 5px;
+    flex-wrap: wrap;
+    margin-bottom: 5px;
+  }
+  .pill {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    border: 0.5px solid var(--color-border-tertiary);
+    color: var(--color-text-secondary);
+    background: var(--color-background-primary);
+  }
+  .pill.active { background: #EEEDFE; border-color: #7F77DD; color: #3C3489; }
+  @media (prefers-color-scheme: dark) { .pill.active { background: #26215C; border-color: #534AB7; color: #AFA9EC; } }
+
+  .edge-case {
+    display: flex;
+    gap: 8px;
+    padding: 6px 10px;
+    border-radius: var(--border-radius-md);
+    border: 0.5px solid var(--color-border-tertiary);
+    margin-bottom: 5px;
+    align-items: flex-start;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-primary);
+  }
+  .edge-icon { flex-shrink: 0; font-size: 13px; }
+
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+  .tl-row {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+  .tl-time {
+    font-size: 10px;
+    font-weight: 500;
+    color: var(--color-text-tertiary);
+    width: 52px;
+    flex-shrink: 0;
+    padding-top: 2px;
+    text-align: right;
+  }
+  .tl-bar-col {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 16px;
+    flex-shrink: 0;
+  }
+  .tl-dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: #7F77DD;
+    flex-shrink: 0;
+    margin-top: 3px;
+  }
+  .tl-dot.teal  { background: #1D9E75; }
+  .tl-dot.amber { background: #BA7517; }
+  .tl-dot.gray  { background: var(--color-border-secondary); }
+  .tl-line {
+    width: 1px;
+    flex: 1;
+    min-height: 14px;
+    background: var(--color-border-tertiary);
+  }
+  .tl-content {
+    flex: 1;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    padding-bottom: 12px;
+    line-height: 1.55;
+  }
+  .tl-content strong {
+    font-weight: 500;
+    color: var(--color-text-primary);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  .hook-card {
+    background: var(--color-background-primary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 10px 12px;
+    flex: 1;
+    min-width: 140px;
+  }
+  .hook-name {
+    font-size: 11px;
+    font-weight: 500;
+    color: #3C3489;
+    font-family: var(--font-mono);
+    margin-bottom: 4px;
+  }
+  @media (prefers-color-scheme: dark) { .hook-name { color: #AFA9EC; } }
+
+  .divider {
+    height: 0.5px;
+    background: var(--color-border-tertiary);
+    margin: 1.5rem 0 0;
+  }
+
+  .async-flow {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+  .async-step {
+    font-size: 11px;
+    color: var(--color-text-secondary);
+    background: var(--color-background-secondary);
+    border: 0.5px solid var(--color-border-tertiary);
+    border-radius: var(--border-radius-md);
+    padding: 5px 10px;
+  }
+  .async-arrow {
+    font-size: 14px;
+    color: var(--color-text-tertiary);
+    padding: 0 4px;
+  }
+
+  .legend {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    color: var(--color-text-secondary);
+  }
+  .legend-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+  }
+</style>
+
+<div class="flow-wrap">
+
+  <!-- LEGEND -->
+  <div class="legend">
+    <div class="legend-item"><div class="legend-dot" style="background:#7F77DD"></div> Screen / State</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#1D9E75"></div> Async / Storage</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#BA7517"></div> Optional Feature</div>
+    <div class="legend-item"><div class="legend-dot" style="background:#E24B4A"></div> Edge Case</div>
+    <div class="legend-item" style="font-style:italic">Click any screen to expand its detail</div>
+  </div>
+
+  <!-- ─── 1. APP LAUNCH ─── -->
+  <div class="section-label">1 · App launch</div>
+
+  <div class="row">
+    <div class="screen" id="s-launch" onclick="toggle('launch')">
+      <div class="screen-name">
+        <i class="ti ti-rocket" aria-hidden="true"></i>
+        App opens
+        <span class="badge badge-amber">Optional splash</span>
+      </div>
+      <div class="screen-detail">
+        <li>GestureHandlerRootView + NavigationContainer mount</li>
+        <li>AppNavigator renders — useShortlist() hook fires</li>
+        <li>AsyncStorage read begins in background</li>
+      </div>
+      <div class="detail-panel" id="d-launch">
+        <h4>Splash screen flow</h4>
+        ScoutIQ logo fades in → holds for 1s → fades out → Discover tab loads. Built with a simple <code>useState(showSplash)</code> in App.tsx. No navigation, no logic — purely visual.
+        <h4>AsyncStorage on mount</h4>
+        <div class="async-flow" style="margin-top:6px">
+          <div class="async-step">mount</div><div class="async-arrow">→</div>
+          <div class="async-step">getItem('@scoutiq_shortlist')</div><div class="async-arrow">→</div>
+          <div class="async-step">JSON.parse</div><div class="async-arrow">→</div>
+          <div class="async-step">setShortlist([])</div>
+        </div>
+        <div style="margin-top:6px">isLoading = true during this read. ShortlistScreen shows ActivityIndicator until resolved.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓</div>
+
+  <!-- ─── 2. NAVIGATION SHELL ─── -->
+  <div class="section-label">2 · Navigation structure</div>
+
+  <div class="nav-structure">
+    <div class="tab-bar" id="tab-bar">
+      <div class="tab active" id="tab-discover" onclick="switchTab('discover')">
+        <i class="ti ti-compass" aria-hidden="true"></i><br>Discover
+      </div>
+      <div class="tab" id="tab-shortlist" onclick="switchTab('shortlist')">
+        <i class="ti ti-bookmark" aria-hidden="true"></i><br>Shortlist
+        <div class="tab-badge" id="tab-badge" style="display:none">3</div>
+      </div>
+    </div>
+    <div style="font-size:11px; color:var(--color-text-tertiary); line-height:1.6">
+      <strong style="color:var(--color-text-secondary);font-weight:500">Discover tab</strong> → NativeStackNavigator → Feed screen → Profile screen (slide in)<br>
+      <strong style="color:var(--color-text-secondary);font-weight:500">Shortlist tab</strong> → NativeStackNavigator → Shortlist screen → Profile screen (slide in)<br>
+      <strong style="color:var(--color-text-secondary);font-weight:500">useShortlist()</strong> called once here, props passed to all screens — single source of truth
+    </div>
+  </div>
+
+  <!-- ─── 3. DISCOVER SCREEN ─── -->
+  <div class="section-label">3 · Discover screen</div>
+
+  <div class="row">
+    <div class="screen" id="s-discover" onclick="toggle('discover')">
+      <div class="screen-name">
+        <i class="ti ti-compass" aria-hidden="true"></i>
+        Discover — Feed
+        <span class="badge badge-purple">30 pts</span>
+        <span class="badge badge-purple">+10 pts search</span>
+      </div>
+      <div class="screen-detail">
+        <li>Search bar → useDebounce(300ms) → filters feed</li>
+        <li>Result count below: "Showing N result(s)"</li>
+        <li>Filter chips: All / Football / Basketball / Athletics</li>
+        <li>FlatList with keyExtractor — NOT ScrollView</li>
+        <li>Empty state when no results match</li>
+      </div>
+      <div class="detail-panel" id="d-discover">
+        <h4>Search + filter interaction</h4>
+        Both active simultaneously — AND logic. Search debounces 300ms. Filter is instant. Result count reflects both.
+        <h4>Filter chip states</h4>
+        <div class="pill-row" style="margin-top:5px">
+          <span class="pill active">All</span>
+          <span class="pill">Football</span>
+          <span class="pill">Basketball</span>
+          <span class="pill">Athletics</span>
+        </div>
+        Active chip: primaryLight bg + primary border. Tap active sport → resets to All.
+        <h4>FlatList requirements</h4>
+        keyExtractor={(item) => item.id} · contentContainerStyle with padding · ItemSeparatorComponent for gaps · ListEmptyComponent for zero results · keyboardShouldPersistTaps="handled"
+        <h4>Score color logic (used on cards)</h4>
+        Score ≥ 80 → green · 60–79 → amber · &lt;60 → red. Same getScoreColor() used everywhere.
+      </div>
+    </div>
+  </div>
+
+  <div class="connector">Tap athlete card → navigates to Profile (athleteId in params)</div>
+  <div class="arrow-down">↓</div>
+
+  <!-- ─── 4. PROFILE SCREEN ─── -->
+  <div class="section-label">4 · Athlete profile screen</div>
+
+  <div class="row">
+    <div class="screen" id="s-profile" onclick="toggle('profile')">
+      <div class="screen-name">
+        <i class="ti ti-user" aria-hidden="true"></i>
+        Athlete Profile
+        <span class="badge badge-purple">25 pts</span>
+      </div>
+      <div class="screen-detail">
+        <li>Athlete looked up by ID (not passed as object)</li>
+        <li>Avatar, name, sport, position, age in hero section</li>
+        <li>Bio paragraph</li>
+        <li>Stats section — stat rows with progress bar (sport-specific keys)</li>
+        <li>Readiness Score — custom progress bar, height 16, dynamic color</li>
+        <li>Add / Remove Shortlist button — reads live state from hook</li>
+        <li>Toast feedback on Add/Remove (optional, 2s auto-dismiss)</li>
+      </div>
+      <div class="detail-panel" id="d-profile">
+        <h4>Athlete lookup</h4>
+        <code>const athlete = athletes.find(a => a.id === route.params.athleteId)</code><br>
+        Never pass full objects through nav params — ID only.
+        <h4>Stats rendering</h4>
+        Object.entries(athlete.stats) → map to StatRow components. Label formatted: camelCase → Title Case with spaces. Each StatRow has label + ProgressBar + value number.
+        <h4>Shortlist button states</h4>
+        <div style="display:flex;gap:6px;margin-top:5px">
+          <div style="flex:1;padding:7px 10px;border-radius:var(--border-radius-md);background:#EEEDFE;color:#3C3489;font-size:11px;text-align:center;font-weight:500">+ Add to Shortlist</div>
+          <div style="flex:1;padding:7px 10px;border-radius:var(--border-radius-md);background:#FCEBEB;color:#A32D2D;font-size:11px;text-align:center;font-weight:500">✓ Remove from Shortlist</div>
+        </div>
+        <h4>Toast (optional feature)</h4>
+        Animated View slides up from bottom on toggle, shows "Added to shortlist ✓" or "Removed from shortlist". setTimeout(dismiss, 2000). Built with Animated.spring — no library.
+        <h4>Back navigation</h4>
+        React Navigation default back — no custom logic. State stays live via hook, never stale.
+      </div>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓ back navigates to Feed</div>
+
+  <!-- ─── 5. SHORTLIST ─── -->
+  <div class="section-label">5 · Shortlist screen</div>
+
+  <div class="row">
+    <div class="screen" id="s-shortlist" onclick="toggle('shortlist')">
+      <div class="screen-name">
+        <i class="ti ti-bookmark" aria-hidden="true"></i>
+        Shortlist
+        <span class="badge badge-purple">25 pts</span>
+      </div>
+      <div class="screen-detail">
+        <li>Stats bar: total athletes + avg score (recalculates live)</li>
+        <li>FlatList of shortlisted athletes</li>
+        <li>Swipe-to-delete via Swipeable (gesture-handler)</li>
+        <li>Persisted via AsyncStorage — survives restarts</li>
+        <li>Polished empty state when list is empty</li>
+      </div>
+      <div class="detail-panel" id="d-shortlist">
+        <h4>Stats bar calculation</h4>
+        <code>avgScore = Math.round(shortlist.reduce((s,a) => s+a.score, 0) / shortlist.length)</code><br>
+        Both values recalculate on every add/remove.
+        <h4>Swipe-to-delete mechanics</h4>
+        Swipeable wraps each AthleteCard. renderRightActions returns a red "Remove" panel (width 80px). overshootRight=false prevents rubber-band. Pressing panel calls removeFromShortlist(id) which updates state + AsyncStorage.
+        <h4>AsyncStorage flow (remove)</h4>
+        <div class="async-flow" style="margin-top:5px">
+          <div class="async-step">swipe tap</div><div class="async-arrow">→</div>
+          <div class="async-step">filter state</div><div class="async-arrow">→</div>
+          <div class="async-step">setShortlist</div><div class="async-arrow">→</div>
+          <div class="async-step">AsyncStorage.setItem</div>
+        </div>
+        <h4>Tap card → Profile (optional feature)</h4>
+        Shortlist tab has its own NativeStackNavigator. Tapping a card navigates to ProfileScreen within that stack. Profile shows live shortlist state. Back returns to Shortlist.
+        <h4>Empty state</h4>
+        Icon 🏆 · "No athletes shortlisted" · "Go discover some talent!" · optional CTA button navigates to Discover tab.
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── STATE FLOWS ─── -->
+  <div class="section-label" style="margin-top:1.5rem">6 · Shared state flows</div>
+
+  <div class="state-row">
+    <div class="state-box">
+      <div class="state-box-title">useShortlist hook</div>
+      <div class="state-box-detail">Single instance in AppNavigator. shortlist, isShortlisted, toggleShortlist, removeFromShortlist, isLoading passed as props to all screens.</div>
+    </div>
+    <div class="state-box">
+      <div class="state-box-title">useDebounce hook</div>
+      <div class="state-box-detail">Local to DiscoverScreen. 300ms delay on search text. Returns debouncedSearch used in useMemo filter. Cleanup clears timer on each keystroke.</div>
+    </div>
+  </div>
+
+  <!-- ─── ASYNC STORAGE ─── -->
+  <div class="section-label">7 · AsyncStorage lifecycle</div>
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-time">Launch</div>
+      <div class="tl-bar-col"><div class="tl-dot teal"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>getItem('@scoutiq_shortlist')</strong>isLoading = true. Parse JSON → setShortlist. isLoading = false. Tab badge appears.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">Add</div>
+      <div class="tl-bar-col"><div class="tl-dot teal"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>toggleShortlist(athlete)</strong>State updates immediately (optimistic). setItem fires async. Button changes to "Remove". Badge count +1. Toast shows.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">Remove</div>
+      <div class="tl-bar-col"><div class="tl-dot teal"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>removeFromShortlist(id)</strong>Filter state. setItem with updated array. Swipeable collapses. Avg score recalculates. Toast shows.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">Restart</div>
+      <div class="tl-bar-col"><div class="tl-dot teal"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>getItem again on mount</strong>Shortlist rehydrates from storage. Grader verifies this — test at Hour 9, not Hour 23.</div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── EDGE CASES ─── -->
+  <div class="section-label" style="margin-top:1.5rem">8 · Edge cases & states</div>
+
+  <div class="edge-case">
+    <i class="ti ti-search edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">Search + filter = 0 results</strong><br>EmptyState: "No athletes found" · "Try a different name or change the sport filter"</div>
+  </div>
+  <div class="edge-case">
+    <i class="ti ti-bookmark edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">Empty shortlist</strong><br>EmptyState: 🏆 icon · "No athletes shortlisted" · optional CTA to Discover tab</div>
+  </div>
+  <div class="edge-case">
+    <i class="ti ti-refresh edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">App restart</strong><br>AsyncStorage rehydrates shortlist. isLoading shows ActivityIndicator on Shortlist tab until resolved.</div>
+  </div>
+  <div class="edge-case">
+    <i class="ti ti-arrows-exchange edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">Remove in Shortlist → open Profile</strong><br>Profile button shows "Add to Shortlist" — hook state is live, never stale. Works because hook is single instance.</div>
+  </div>
+  <div class="edge-case">
+    <i class="ti ti-list-numbers edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">Single result count</strong><br>"Showing 1 result" — not "1 results". Handled by: <code>result${n !== 1 ? 's' : ''}</code></div>
+  </div>
+  <div class="edge-case">
+    <i class="ti ti-device-mobile edge-icon" aria-hidden="true"></i>
+    <div><strong style="font-weight:500;color:var(--color-text-primary)">Android swipe gestures</strong><br>GestureHandlerRootView with flex:1 must wrap everything in App.tsx. Without it, swipe silently fails on Android only.</div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ─── BUILD ORDER ─── -->
+  <div class="section-label" style="margin-top:1.5rem">9 · Build order (24h)</div>
+  <div class="timeline">
+    <div class="tl-row">
+      <div class="tl-time">0–1h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Setup + types + data</strong>Expo init, install deps, babel config, types/index.ts, athletes.json (15 athletes)</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">1–2h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Theme + navigation shell</strong>theme.ts, AppNavigator with placeholder screens. Verify two tabs visible.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">2–3.5h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Atoms + AthleteCard</strong>ProgressBar, Avatar, FilterChip, EmptyState, StatRow, AthleteCard. Render one card to verify.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">3.5–6h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Discover screen</strong>FlatList, filter chips, useDebounce + search bar, result count, empty state.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">6–9h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Profile screen</strong>Stats, readiness bar, bio, hero section. No shortlist button yet.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">9–10h</div>
+      <div class="tl-bar-col"><div class="tl-dot teal"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>useShortlist hook ← test AsyncStorage now</strong>Add athlete. Reload app. Verify it persists. This is the most important test in the build.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">10–11h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Wire shortlist button on Profile</strong>Pass shortlistProps from navigator. Button toggles live.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">11–13h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Shortlist screen</strong>Stats bar, FlatList, swipe-to-delete, empty state.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">13–14h</div>
+      <div class="tl-bar-col"><div class="tl-dot amber"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Optional: Shortlist → Profile navigation</strong>Add NativeStack inside Shortlist tab. Wire card onPress.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">14–15h</div>
+      <div class="tl-bar-col"><div class="tl-dot amber"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Optional: Toast + splash screen</strong>Animated toast on shortlist toggle. Splash fade in App.tsx.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">15–18h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>Full end-to-end test pass</strong>Every edge case. iOS + Android via Expo Go. Restart app for AsyncStorage check.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">18–21h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>UI polish pass</strong>Spacing, shadow, color consistency across all screens.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">21–23h</div>
+      <div class="tl-bar-col"><div class="tl-dot"></div><div class="tl-line"></div></div>
+      <div class="tl-content"><strong>README</strong>Setup steps, score formula, decisions, what's incomplete, AI tools used.</div>
+    </div>
+    <div class="tl-row">
+      <div class="tl-time">23–24h</div>
+      <div class="tl-bar-col"><div class="tl-dot gray"></div><div class="tl-line" style="opacity:0"></div></div>
+      <div class="tl-content"><strong>Buffer + push</strong>Final bug fixes. Push to public GitHub repo. Reply to email.</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const open = {};
+  function toggle(id) {
+    const panel = document.getElementById('d-' + id);
+    const screen = document.getElementById('s-' + id);
+    if (!panel) return;
+    open[id] = !open[id];
+    panel.classList.toggle('open', open[id]);
+    screen.classList.toggle('active', open[id]);
+  }
+
+  function switchTab(tab) {
+    document.getElementById('tab-discover').classList.toggle('active', tab === 'discover');
+    document.getElementById('tab-shortlist').classList.toggle('active', tab === 'shortlist');
+    const badge = document.getElementById('tab-badge');
+    badge.style.display = tab === 'shortlist' ? 'none' : 'flex';
+  }
+</script>
