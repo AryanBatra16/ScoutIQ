@@ -62,13 +62,8 @@ export function HomeScreen({ navigation, shortlistProps }: Props) {
     <ScrollView style={styles.screen} contentContainerStyle={styles.scrollContent} showsVerticalScrollIndicator={false}>
       {/* Premium Welcome Header */}
       <View style={styles.header}>
-        <View>
-          <Text style={styles.welcomeSubtitle}>SCIENTIFIC TALENT SCOUTING</Text>
-          <Text style={styles.welcomeTitle}>ScoutIQ Dashboard</Text>
-        </View>
-        <View style={styles.headerBadge}>
-          <Text style={styles.badgeText}>Solo Build</Text>
-        </View>
+        <Text style={styles.welcomeTitle}>ScoutIQ</Text>
+        <Text style={styles.welcomeSubtitle}>SCIENTIFIC TALENT SCOUTING</Text>
       </View>
 
       {/* Grid of Key Statistics */}
@@ -203,11 +198,10 @@ const styles = StyleSheet.create({
   header: {
     backgroundColor: theme.colors.surface,
     paddingHorizontal: theme.spacing.md,
-    paddingTop: 24,
-    paddingBottom: 20,
-    flexDirection: 'row',
+    paddingTop: 28,
+    paddingBottom: 22,
     alignItems: 'center',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     borderBottomWidth: 1,
     borderColor: theme.colors.border,
   },
@@ -215,24 +209,16 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: '700',
     color: theme.colors.primary,
-    letterSpacing: 1.2,
+    letterSpacing: 1.8,
+    marginTop: 6,
+    textAlign: 'center',
   },
   welcomeTitle: {
-    fontSize: 22,
+    fontSize: 26,
     fontWeight: '800',
     color: theme.colors.text,
-    marginTop: 4,
-  },
-  headerBadge: {
-    backgroundColor: theme.colors.primaryLight,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
-    borderRadius: 20,
-  },
-  badgeText: {
-    fontSize: 11,
-    fontWeight: '600',
-    color: theme.colors.primary,
+    letterSpacing: 0.8,
+    textAlign: 'center',
   },
   statsGrid: {
     flexDirection: 'row',
