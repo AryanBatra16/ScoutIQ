@@ -94,7 +94,6 @@ export function AppNavigator() {
           alignItems: 'center',
           justifyContent: 'center',
         },
-        safeAreaInsets: { bottom: 0 },
       }}
     >
       <Tab.Screen

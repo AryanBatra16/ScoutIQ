@@ -1,8 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import type { Athlete } from '@/types';
+import athletesData from '@/data/athletes.json';
 
 const STORAGE_KEY = '@scoutiq_shortlist';
+const masterAthletes = athletesData as Athlete[];
 
 export interface UseShortlistReturn {
   shortlist: Athlete[];
@@ -22,7 +24,15 @@ export function useShortlist(): UseShortlistReturn {
       try {
         const stored = await AsyncStorage.getItem(STORAGE_KEY);
         if (stored) {
-          setShortlist(JSON.parse(stored) as Athlete[]);
+          const parsed = JSON.parse(stored) as Athlete[];
+          const enriched = parsed.map((storedAthlete) => {
+            const master = masterAthletes.find((a) => a.id === storedAthlete.id);
+            if (master) {
+              return { ...master, ...storedAthlete };
+            }
+            return storedAthlete;
+          });
+          setShortlist(enriched);
         }
       } catch {
         // Storage read failed, start with empty list
